@@ -547,3 +547,128 @@ main{position:relative;background:rgba(255,251,242,.54)}
   .section-heading h2{font-size:1.3rem}
   .grid{gap:1rem}
 }
+
+
+/* =========================================================
+   文藝廳・全頁意匠統一改訂
+   臙脂／古金／象牙色　玲瓏浪漫・近代文藝誌
+   既存のページ構成・ナビゲーション・機能は維持
+   ========================================================= */
+:root{
+  --wine:#64162f;
+  --wine-deep:#260914;
+  --paper:#f8f1e6;
+  --paper-dark:#eadbc6;
+  --ink:#2d2023;
+  --muted:#816d6c;
+  --gold:#b59660;
+  --line:#d8c4a5;
+  --white:#fffaf1;
+  --gold-light:#e7d2a8;
+}
+html{scroll-padding-top:1rem}
+body{
+  color:var(--ink);
+  background:
+    radial-gradient(ellipse at 10% 5%,rgba(181,150,96,.12),transparent 25rem),
+    radial-gradient(ellipse at 95% 42%,rgba(100,22,47,.055),transparent 30rem),
+    var(--paper);
+}
+::selection{background:#64162f;color:#fff8eb}
+.topline{font-size:.7rem;letter-spacing:.22em}
+.masthead{background:linear-gradient(110deg,rgba(255,250,241,.98),rgba(245,233,215,.96),rgba(255,250,241,.98))}
+.masthead-inner{max-width:1180px}
+.seal{position:relative}
+.seal:after{content:"";position:absolute;inset:-7px;border:1px solid rgba(181,150,96,.38);border-radius:50%;pointer-events:none}
+.brand-title{font-weight:500}
+.nav{max-width:1180px}
+.nav a{position:relative;transition:background .2s,color .2s,border-color .2s}
+.nav a[aria-current=page]:after{content:"";position:absolute;left:40%;right:40%;bottom:3px;height:1px;background:var(--gold-light)}
+.hero{isolation:isolate}
+.hero-inner{max-width:1180px;min-height:285px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.hero h1{max-width:800px}
+.hero p{max-width:690px}
+.hero .eyebrow{display:flex;align-items:center;gap:.7rem}
+.hero .eyebrow:before{content:"";width:26px;height:1px;background:var(--gold)}
+.breadcrumb{max-width:1180px}
+main{max-width:1180px}
+.section-heading{align-items:center}
+.section-heading h2{line-height:1.6}
+.section-heading span{margin-left:auto;white-space:nowrap}
+.card{border-radius:2px;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.card:hover{transform:translateY(-2px);border-color:#b59660;box-shadow:0 10px 24px rgba(53,19,31,.09)}
+.card a{display:inline-block;text-decoration-thickness:1px;text-underline-offset:4px}
+.card a:hover{color:#8b2445}
+.notice{color:#493338}
+.news-list a{text-decoration-thickness:1px;text-underline-offset:4px}
+.news-list a:hover{color:#8b2445}
+.button-link{display:inline-flex;align-items:center;gap:.7rem;min-height:44px}
+.button-link:after{content:"↗";font-family:var(--sans);font-size:.85rem}
+.statute{background:rgba(255,250,241,.35)}
+.statute tr:hover td{background:rgba(234,219,198,.22)}
+.page-title{color:var(--wine);line-height:1.55}
+.page-title:after{content:"";display:block;width:76px;height:1px;margin-top:.7rem;background:linear-gradient(90deg,var(--gold),transparent)}
+.subnav a{transition:background .2s,border-color .2s}
+.subnav a:hover{border-color:var(--gold)}
+.person{padding:1rem;background:rgba(255,250,241,.55);border:1px solid var(--line)}
+.person-mark{border-radius:50% 50% 2px 2px}
+.footer{position:relative}
+.footer:before{content:"❧  ✦  ❧";display:block;text-align:center;color:#c8a66c;letter-spacing:.55em;padding:.7rem 1rem 0;font-size:.85rem}
+.footer-inner{max-width:1180px}
+.footer-grid{padding-top:.5rem}
+.footer a{text-underline-offset:4px}
+.footer a:hover{color:#fff2d8}
+.chief-ribbon{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:1.5rem;
+  max-width:1180px;
+  margin:1.3rem auto 0;
+  padding:1.1rem 1.4rem;
+  border:1px solid var(--gold);
+  background:linear-gradient(105deg,rgba(255,250,241,.96),rgba(237,222,199,.88));
+  box-shadow:0 5px 18px rgba(53,19,31,.045);
+}
+.chief-ribbon:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--gold),var(--wine),var(--gold))}
+.chief-ribbon-kicker{font: .68rem var(--sans);letter-spacing:.18em;color:#8c6b50}
+.chief-ribbon-name{margin:.12rem 0;color:var(--wine);font-size:1.35rem;letter-spacing:.14em}
+.chief-ribbon-desc{margin:0;color:#655154;font-size:.83rem}
+.chief-ribbon-link{white-space:nowrap;color:var(--wine);font:.78rem var(--sans);letter-spacing:.08em;text-decoration:none;border-bottom:1px solid var(--gold);padding:.45rem 0}
+.chief-ribbon-link:hover{color:#9a2d4b}
+.chief-profile{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:minmax(0,1.5fr) minmax(220px,.7fr);
+  gap:1.5rem;
+  padding:clamp(1.25rem,3vw,2.2rem);
+  border:1px solid var(--gold);
+  background:
+    radial-gradient(ellipse at 100% 0,rgba(181,150,96,.15),transparent 18rem),
+    linear-gradient(120deg,rgba(255,250,241,.96),rgba(239,224,204,.78));
+  box-shadow:0 9px 28px rgba(53,19,31,.06);
+}
+.chief-profile:after{content:"聖";position:absolute;right:1.3rem;bottom:-4.7rem;font-size:15rem;line-height:1;color:rgba(100,22,47,.045);pointer-events:none}
+.chief-profile-main,.chief-profile-aside{position:relative;z-index:1}
+.chief-profile-kicker{font:.7rem var(--sans);letter-spacing:.22em;color:#8e704d}
+.chief-profile-name{margin:.25rem 0 .15rem;color:var(--wine);font-size:clamp(2rem,4vw,3.15rem);font-weight:500;letter-spacing:.2em;line-height:1.35}
+.chief-profile-reading{margin:0 0 1rem;color:var(--muted);font:.8rem var(--sans);letter-spacing:.18em}
+.chief-profile-summary{max-width:680px;line-height:2.05}
+.chief-profile-quote{margin:1.2rem 0 0;padding:1rem 1.1rem;border-left:2px solid var(--gold);background:rgba(255,250,241,.7);color:#563843;line-height:2}
+.chief-profile-aside{align-self:stretch;padding:1.1rem;border:1px solid rgba(181,150,96,.55);background:rgba(255,250,241,.58)}
+.chief-profile-aside h3{margin:0 0 .8rem;color:var(--wine);font-size:.95rem;letter-spacing:.1em}
+.chief-profile-aside dl{margin:0}
+.chief-profile-aside dt{margin-top:.75rem;color:#8e704d;font:.68rem var(--sans);letter-spacing:.1em}
+.chief-profile-aside dd{margin:.15rem 0 0;font-size:.88rem;line-height:1.8}
+.chief-profile-note{margin:.9rem 0 0;color:var(--muted);font-size:.76rem;line-height:1.8}
+@media(max-width:760px){
+  .hero-inner{min-height:unset}
+  .chief-ribbon{grid-template-columns:1fr;gap:.5rem;margin:1rem 1rem 0;padding:1rem 1.1rem}
+  .chief-ribbon-link{justify-self:start}
+  .chief-profile{grid-template-columns:1fr;gap:1rem}
+  .chief-profile-aside{max-width:none}
+  .chief-profile:after{right:-.5rem;bottom:-2.5rem;font-size:10rem}
+}
+@media(prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
