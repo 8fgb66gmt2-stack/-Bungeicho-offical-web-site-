@@ -1098,3 +1098,67 @@ main{position:relative;z-index:1;max-width:1240px;margin:auto;padding:0 clamp(1.
   html{scroll-behavior:auto}
   *,*:before,*:after{transition:none!important;animation:none!important}
 }
+
+
+/* 長官紹介・可読性と誌面構成の最終改訂 */
+.chief-profile{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(275px,.75fr);
+  gap:1.4rem 2rem;
+  padding:clamp(1.2rem,3.4vw,2.8rem);
+  border:1px solid #b9995f;
+  outline:1px solid rgba(185,153,95,.45);
+  outline-offset:5px;
+  background:#fff9ef;
+  box-shadow:0 16px 42px rgba(38,7,17,.12);
+}
+.chief-profile:before{inset:9px;border:1px solid rgba(185,153,95,.28)}
+.chief-profile:after{content:none}
+.chief-profile-main,.chief-profile-aside{min-width:0;position:relative;z-index:2}
+.chief-profile-main{padding:clamp(.3rem,1.5vw,1.1rem)}
+.chief-profile-kicker{color:#79562e;font-size:.72rem;letter-spacing:.16em;line-height:1.8}
+.chief-profile-name{color:#4c1026;font-size:clamp(2.5rem,5vw,4.4rem);letter-spacing:.18em;line-height:1.35;margin:.35rem 0}
+.chief-profile-reading{color:#72595b;font-size:.84rem;letter-spacing:.16em;margin:0 0 .7rem}
+.chief-profile-titles{display:inline-block;margin:.3rem 0 1.4rem;padding:.35rem .75rem;border-top:1px solid #b9995f;border-bottom:1px solid #b9995f;color:#5b2034;background:#f5e8d4;font-size:.82rem;letter-spacing:.04em}
+.chief-profile-summary{color:#30242a;font-size:.96rem;line-height:2.25;max-width:unset}
+.chief-profile-summary p{margin:0 0 1rem;color:#30242a}
+.chief-profile-quote{color:#482033;background:#f4e8d6;border:1px solid #d4bd96;border-left:4px solid #65132d;padding:1.15rem 1.25rem;font-size:.95rem;line-height:2.15}
+.chief-profile-note{color:#665452;font-size:.76rem;line-height:1.9}
+.chief-profile-aside{
+  align-self:stretch;
+  padding:1.4rem;
+  background:#f0e2cc;
+  border:1px solid #b9995f;
+  box-shadow:inset 0 0 0 5px rgba(255,249,239,.65);
+  color:#302129;
+}
+.profile-aside-ornament{text-align:center;color:#8d6b3d;font:.62rem var(--sans);letter-spacing:.18em;margin:0 0 .6rem}
+.chief-profile-aside h3{color:#4c1026;font-size:1.25rem;letter-spacing:.16em;margin:0 0 1rem;padding:0 0 .8rem;border-bottom:1px solid #b9995f}
+.chief-profile-aside dl{display:grid;grid-template-columns:1fr;gap:0}
+.chief-profile-aside dt{color:#79562e;font-size:.66rem;font-weight:700;letter-spacing:.1em;margin:.8rem 0 .1rem}
+.chief-profile-aside dd{color:#30242a;font-size:.9rem;line-height:1.95;margin:0;overflow-wrap:anywhere}
+.profile-rumour{margin:1.25rem 0 .5rem;padding:1rem;border:1px solid #c7a977;background:#fff9ef}
+.profile-rumour span{color:#65132d;font-size:.72rem;letter-spacing:.12em;font-weight:700}
+.profile-rumour p{margin:.45rem 0 0;color:#39262d;font-size:.84rem;line-height:2}
+.chief-profile-history{
+  position:relative;z-index:2;grid-column:1/-1;
+  margin:.4rem 0 0;padding:1.4rem 1.5rem 1rem;
+  border-top:1px solid #b9995f;
+  background:linear-gradient(110deg,rgba(240,226,204,.65),rgba(255,249,239,.9));
+}
+.history-heading{display:flex;align-items:baseline;gap:1rem;margin:0 0 1rem}
+.history-heading span{color:#927044;font:.62rem var(--sans);letter-spacing:.2em}
+.history-heading h3{margin:0;color:#4c1026;font-size:1.2rem;letter-spacing:.15em;font-weight:500}
+.history-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem 1.3rem}
+.history-list li{display:grid;grid-template-columns:4.2rem minmax(0,1fr);gap:.8rem;align-items:start;padding:.8rem 0;border-top:1px solid rgba(185,153,95,.48)}
+.history-mark{display:inline-block;text-align:center;padding:.2rem .25rem;border:1px solid #b9995f;color:#65132d;background:#fff9ef;font-size:.72rem;letter-spacing:.08em}
+.history-list strong{display:block;color:#4c1026;font-size:.9rem;font-weight:600;line-height:1.8}
+.history-list p{margin:.25rem 0 0;color:#403137;font-size:.83rem;line-height:1.95}
+@media(max-width:800px){
+ .chief-profile{grid-template-columns:minmax(0,1fr);gap:1rem;padding:1.25rem}
+ .chief-profile-main{padding:.25rem}
+ .chief-profile-aside{padding:1.2rem}
+ .chief-profile-history{padding:1rem .2rem .3rem}
+ .history-list{grid-template-columns:minmax(0,1fr)}
+ .chief-profile-name{font-size:clamp(2.2rem,10vw,3.2rem)}
+}
