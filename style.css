@@ -1162,3 +1162,18 @@ main{position:relative;z-index:1;max-width:1240px;margin:auto;padding:0 clamp(1.
  .history-list{grid-template-columns:minmax(0,1fr)}
  .chief-profile-name{font-size:clamp(2.2rem,10vw,3.2rem)}
 }
+
+
+/* 長官略歴：独立した本文セクション */
+.chief-biography{margin-top:4.5rem}
+.biography-intro{padding:1.6rem clamp(1.2rem,3vw,2.5rem);margin-bottom:1.3rem;background:#3b0c20;color:#fff4e1;border:1px solid #b9995f;box-shadow:inset 0 0 0 5px rgba(255,244,225,.045)}
+.biography-kicker{margin:0 0 .65rem;color:#e2c58f;font: .68rem var(--sans);letter-spacing:.2em}
+.biography-lead{max-width:900px;margin:0;color:#fff4e1;font-size:clamp(1.05rem,2vw,1.35rem);line-height:2.15;letter-spacing:.045em}
+.biography-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.biography-entry{position:relative;padding:1.55rem 1.5rem 1.4rem;background:rgba(255,249,239,.9);border:1px solid #d2b98e;border-top:3px solid #65132d;box-shadow:0 5px 18px rgba(38,7,17,.045);min-width:0}
+.biography-index{display:block;margin-bottom:.6rem;color:#947143;font:.65rem var(--sans);letter-spacing:.16em}
+.biography-entry h3{margin:0 0 .85rem;color:#4c1026;font-size:1.2rem;font-weight:500;letter-spacing:.09em;line-height:1.7}
+.biography-entry p{margin:.65rem 0 0;color:#30242a;font-size:.92rem;line-height:2.2;overflow-wrap:anywhere}
+.biography-mystery{background:linear-gradient(145deg,#f1e2ca,#fff9ef);border-top-color:#b9995f}
+.biography-disclaimer{margin:1rem 0 0;padding:.8rem 1rem;border-left:3px solid #b9995f;background:rgba(232,216,189,.42);color:#5e4a4c;font-size:.76rem;line-height:1.9}
+@media(max-width:760px){.biography-columns{grid-template-columns:1fr}.biography-entry{padding:1.2rem}.biography-intro{padding:1.2rem}.biography-entry p{font-size:.9rem}}
