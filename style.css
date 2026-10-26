@@ -357,3 +357,193 @@ body{
   .hero{min-height:430px}
   .hero h1{letter-spacing:.12em}
 }
+
+
+/* ═══ 玲瓏浪漫・耽美文藝誌の意匠 ═══ */
+:root{
+  --wine:#64172d;
+  --wine-deep:#290914;
+  --paper:#f7efdf;
+  --paper-dark:#e7d7bd;
+  --ink:#30221f;
+  --muted:#79665c;
+  --gold:#b18b4b;
+  --line:#c7ad83;
+}
+body{
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.82),transparent 38rem),
+    repeating-linear-gradient(0deg,rgba(88,53,36,.018) 0 1px,transparent 1px 5px),
+    var(--paper);
+}
+.topline{
+  position:relative;
+  background:#1e302a;
+  border-bottom:3px double #b18b4b;
+  letter-spacing:.2em;
+}
+.topline:after{
+  content:"✦　❧　✦";
+  position:absolute;right:max(1rem,calc((100% - 1120px)/2));
+  top:50%;transform:translateY(-50%);
+  color:#d9bf89;font-size:.7rem;letter-spacing:.35em;
+}
+.masthead{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(115deg,#fff8eb 0%,#f4e7d2 48%,#fff8eb 100%);
+  border-bottom:1px solid #7b263b;
+}
+.masthead:after{
+  content:"❦";
+  position:absolute;right:clamp(1rem,7vw,6rem);top:50%;
+  transform:translateY(-50%) rotate(10deg);
+  color:rgba(100,23,45,.09);font-size:8rem;line-height:1;
+  pointer-events:none;
+}
+.masthead-inner{position:relative;z-index:1;min-height:132px}
+.seal{
+  width:70px;height:70px;border-radius:50%;
+  background:#fff8eb;
+  box-shadow:0 0 0 2px #f7efdf,0 0 0 3px #b18b4b,0 0 0 7px rgba(177,139,75,.15);
+}
+.brand-kicker{font-size:.68rem;letter-spacing:.25em;color:#806a56}
+.brand-title{
+  color:#64172d;
+  font-size:clamp(2rem,4.5vw,3rem);
+  letter-spacing:.3em;
+  text-shadow:1px 1px 0 rgba(177,139,75,.18);
+}
+.brand-sub{letter-spacing:.2em;color:#766052}
+.nav-wrap{
+  background:linear-gradient(90deg,#2b0b17,#65172e 48%,#2b0b17);
+  border-bottom:4px double #c8a86b;
+  box-shadow:0 5px 14px rgba(50,15,25,.12);
+}
+.nav a{letter-spacing:.12em;padding:.85rem 1rem}
+.hero{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 82% 48%,transparent 0 100px,rgba(220,188,128,.17) 101px 102px,transparent 103px 121px,rgba(220,188,128,.11) 122px 123px,transparent 124px 144px,rgba(220,188,128,.07) 145px 146px,transparent 147px),
+    radial-gradient(ellipse at 85% 45%,rgba(169,75,95,.25),transparent 34%),
+    linear-gradient(125deg,#210711 0%,#4a1024 45%,#68172f 73%,#290914 100%);
+  border-top:1px solid #d6bb80;
+  border-bottom:5px double #b18b4b;
+}
+.hero:before{
+  content:"";
+  position:absolute;inset:15px;
+  border:1px solid rgba(218,190,133,.46);
+  pointer-events:none;
+}
+.hero:after{
+  content:"❦";
+  position:absolute;right:8%;bottom:-.55em;
+  color:rgba(235,207,157,.09);font-size:clamp(13rem,28vw,25rem);
+  line-height:1;transform:rotate(-14deg);pointer-events:none;
+}
+.hero-inner{padding-top:clamp(4rem,8vw,7rem);padding-bottom:clamp(4rem,8vw,7rem)}
+.hero-inner:after{content:"文藝";right:9%;font-family:var(--serif);font-weight:500;color:rgba(255,235,202,.055)}
+.eyebrow{color:#dfc18a;letter-spacing:.28em}
+.hero h1{
+  color:#fff5e5;
+  font-size:clamp(2.2rem,5.3vw,4rem);
+  letter-spacing:.2em;
+  text-shadow:0 2px 20px rgba(0,0,0,.24);
+}
+.hero-rule{height:1px;width:120px;background:linear-gradient(90deg,transparent,#d9b975,#d9b975,transparent)}
+.hero p{line-height:2.15;color:#f2e2cf}
+.breadcrumb{
+  background:#eee2ce;
+  border-bottom:1px solid rgba(177,139,75,.45);
+  font-size:.7rem;letter-spacing:.08em;
+}
+main{position:relative;background:rgba(255,251,242,.54)}
+.section{position:relative;margin:2rem 0 3.4rem}
+.section-heading{
+  position:relative;
+  align-items:center;
+  border-bottom:1px solid #b18b4b;
+  padding:0 0 .8rem;
+}
+.section-heading:after{
+  content:"❧";
+  position:absolute;right:0;bottom:-.7rem;
+  color:#a88753;background:var(--paper);
+  padding-left:.6rem;font-size:1.15rem;
+}
+.section-heading h2{
+  color:#64172d;font-weight:500;letter-spacing:.16em;
+}
+.section-heading span{color:#90764f;letter-spacing:.18em}
+.notice{
+  position:relative;
+  background:linear-gradient(105deg,#eee0ca,#fff8eb 72%);
+  border:1px solid #c8ae82;border-left:4px solid #7a2038;
+  box-shadow:inset 0 0 0 4px rgba(177,139,75,.07);
+  padding:1.25rem 1.5rem;
+}
+.notice:after{
+  content:"✦";
+  float:right;color:#b18b4b;font-size:1.2rem;
+}
+.grid{gap:1.2rem}
+.card{
+  background:linear-gradient(145deg,#fffaf0,#f0e3ce);
+  border:1px solid #c6aa7c;
+  outline:1px solid rgba(177,139,75,.18);outline-offset:3px;
+  box-shadow:0 5px 16px rgba(57,26,25,.06);
+  transition:transform .25s,box-shadow .25s,background .25s;
+}
+.card:before{
+  width:4px;
+  background:linear-gradient(180deg,#d6bb80,#6b1b32,#d6bb80);
+}
+.card:after{
+  content:"";
+  position:absolute;top:8px;right:8px;width:12px;height:12px;
+  border-top:1px solid #b18b4b;border-right:1px solid #b18b4b;
+  opacity:.7;pointer-events:none;
+}
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 24px rgba(57,26,25,.12);
+  background:#fffaf1;
+}
+.card h3{color:#64172d;letter-spacing:.08em}
+.card a{color:#702139}
+.news-list{border-top:3px double #7a2038}
+.news-list li{border-bottom:1px solid rgba(177,139,75,.4)}
+.date{color:#806c5a;letter-spacing:.04em}
+.tag{border-color:#b18b4b;background:rgba(177,139,75,.07);letter-spacing:.08em}
+.button-link{
+  background:linear-gradient(110deg,#561226,#7a2038,#561226);
+  border:1px solid #b18b4b;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.06);
+  letter-spacing:.12em;
+}
+.footer{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(145deg,#1b2d27,#293c33 55%,#17251f);
+  border-top:5px double #b18b4b;
+}
+.footer:before{
+  content:"❧　✦　❦　✦　❧";
+  display:block;text-align:center;padding:1.5rem 0 0;
+  color:#d8bb7e;letter-spacing:.35em;font-size:1rem;
+}
+.footer h2,.footer h3{color:#e7d2a7}
+.footer a{color:#f0dfbd}
+.footer-small{border-top:1px solid rgba(211,183,124,.25);color:#c9b89b}
+@media(max-width:700px){
+  .topline:after{display:none}
+  .masthead:after{right:-1rem;font-size:6rem}
+  .masthead-inner{min-height:110px}
+  .brand-title{letter-spacing:.18em}
+  .hero:before{inset:9px}
+  .hero h1{letter-spacing:.1em}
+  .section-heading h2{font-size:1.3rem}
+  .grid{gap:1rem}
+}
