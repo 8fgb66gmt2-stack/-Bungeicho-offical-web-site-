@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded",()=>{
  const update=()=>{
   const q=(search?.value||"").trim().toLocaleLowerCase();let shown=0;
   cards.forEach(card=>{
-   const category=(card.dataset.category||"").split(/\\s+/);
+   const category=(card.dataset.category||"").split(/\s+/);
    const hay=(card.dataset.search+" "+card.textContent).toLocaleLowerCase();
    const okCategory=active==="all"||category.includes(active);
    const okSearch=!q||hay.includes(q);
