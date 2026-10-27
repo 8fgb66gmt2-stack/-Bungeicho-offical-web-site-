@@ -588,3 +588,345 @@ html.aes-js body.revolution-home .aes-rv.aes-in{opacity:1;transform:none;filter:
   html.aes-js body.revolution-home .aes-rv{opacity:1;transform:none;filter:none}
   #aes-petals{display:none}
 }
+
+
+/* ============================================================
+   玲瓏浪漫・可読性改修
+   象牙紙と墨色を基調に、臙脂・薔薇・古金をアクセントとして残す。
+   既存のHTML構造・演出は維持し、文字と操作部の視認性を優先。
+   ============================================================ */
+:root{
+  --aes-night:#25131b;
+  --aes-ink:#30212a;
+  --aes-wine:#6b2039;
+  --aes-wine2:#842e4b;
+  --aes-rose:#b86b80;
+  --aes-rose-bright:#dba0ad;
+  --aes-gold:#a6814b;
+  --aes-gold-light:#e0c99d;
+  --aes-paper:#f7f0e5;
+  --aes-muted:#68565b;
+  --aes-line:rgba(117,63,75,.28);
+  --aes-hairline:rgba(48,33,42,.13);
+  --aes-glow:rgba(184,107,128,.12);
+}
+html{background:#f7f0e5;color-scheme:light}
+body.revolution-home{
+  color:#30212a;
+  background:
+    radial-gradient(ellipse at 8% 12%,rgba(184,107,128,.075),transparent 34%),
+    radial-gradient(ellipse at 92% 48%,rgba(166,129,75,.07),transparent 32%),
+    #f7f0e5;
+  font-size:16px;
+  line-height:1.95;
+  letter-spacing:.025em;
+}
+body.revolution-home:before{
+  opacity:.12;
+  background-image:radial-gradient(rgba(107,32,57,.3) .55px,transparent .55px);
+}
+body.revolution-home:after{opacity:.2}
+body.revolution-home ::selection{background:#6b2039;color:#fff8ef}
+
+/* 上端とブランド：明るい紙面に濃い文字 */
+body.revolution-home .worldline{
+  background:#321722;color:#f0dfc9;
+  font-size:10px;line-height:1.6;
+}
+body.revolution-home .worldline span:last-child{color:#e5c995}
+body.revolution-home .new-masthead{
+  background:rgba(250,245,236,.97);
+  color:#30212a;
+  border-bottom:1px solid rgba(166,129,75,.55);
+}
+body.revolution-home .new-masthead:before{border-color:rgba(166,129,75,.22)}
+body.revolution-home .new-brand{color:#4d1d30}
+body.revolution-home .brand-sigil{
+  color:#fff5e8;background:#6b2039;border-color:#a6814b;
+  box-shadow:inset 0 0 0 3px rgba(255,245,232,.16);
+}
+body.revolution-home .new-brand small{color:#785b5e}
+body.revolution-home .new-brand strong{color:#4d1d30}
+body.revolution-home .new-brand i{color:#785b5e}
+body.revolution-home .masthead-declaration{color:#6b2039}
+body.revolution-home .index-open{
+  color:#6b2039;background:#f7f0e5;border-color:#a6814b;
+}
+body.revolution-home .index-open b{color:#6b2039}
+body.revolution-home .index-open:hover{background:#6b2039;color:#fff8ef}
+
+/* 導覽：コントラストを確保した臙脂の帯 */
+body.revolution-home .new-nav{
+  background:#4a1b2d;color:#fff5e8;border-color:#a6814b;
+}
+body.revolution-home .nav-caption,body.revolution-home .nav-end{color:#e6cda2}
+body.revolution-home .new-nav .nav a{
+  color:#fff5e8;font-size:13px;
+}
+body.revolution-home .new-nav .nav a:hover,
+body.revolution-home .new-nav .nav a[aria-current=page]{
+  color:#fff;background:rgba(255,245,232,.12);
+}
+body.revolution-home .new-nav .nav a:after,
+body.revolution-home .new-nav .nav a:hover:after,
+body.revolution-home .new-nav .nav a[aria-current=page]:after{background:#e6cda2}
+
+/* 第一景：舞台の深い臙脂は残し、文字を明るく */
+body.revolution-home .opening{
+  color:#fff4e7;
+  background:
+    radial-gradient(ellipse at 76% 44%,rgba(132,46,75,.66),transparent 40%),
+    linear-gradient(120deg,#321522 0%,#4b1b2e 56%,#27131e 100%);
+}
+body.revolution-home .opening:before{border-color:rgba(224,201,157,.62)}
+body.revolution-home .opening:after{border-color:rgba(255,244,231,.18)}
+body.revolution-home .opening-meta{color:#ead7bd}
+body.revolution-home .vertical-kicker{color:#f0d8cf}
+body.revolution-home .opening-pretitle{color:#e8c99a}
+body.revolution-home .opening h1{color:#fff3e4;text-shadow:0 5px 28px rgba(0,0,0,.2)}
+body.revolution-home .opening h1 span:nth-child(2){color:#e4a9b6}
+body.revolution-home .opening-title-small{color:#e8c99a}
+body.revolution-home .opening-bottom>p{color:#fff4e7}
+body.revolution-home .enter-link{color:#fff4e7;border-color:rgba(240,216,207,.55)}
+body.revolution-home .enter-link:hover{background:#f7f0e5;color:#4a1b2d}
+body.revolution-home .opening-art{
+  color:#fff4e7;
+  background:linear-gradient(145deg,rgba(255,255,255,.025),rgba(0,0,0,.12));
+  border-color:rgba(224,201,157,.38);
+}
+body.revolution-home .opening-art:before{border-color:rgba(224,201,157,.2)}
+body.revolution-home .giant-circle{border-color:rgba(224,201,157,.5)}
+body.revolution-home .circle-cut{border-color:rgba(224,201,157,.32)}
+body.revolution-home .vertical-kanji{color:rgba(255,244,231,.78)}
+body.revolution-home .art-seal{
+  color:#4a1b2d;background:#f4e5d2;border-color:#c5a16c;
+}
+body.revolution-home .art-seal small{color:#6b2039}
+body.revolution-home .art-index,
+body.revolution-home .art-side-caption,
+body.revolution-home .art-number{color:#f0d8cf}
+body.revolution-home .art-side-caption small{color:#e8c99a}
+body.revolution-home .opening-edge{color:#e8c99a}
+
+/* 標語帯：薄い薔薇色の紙に臙脂の活字 */
+body.revolution-home .manifesto-strip{
+  color:#5a2337;background:#ead8d4;
+  border-top:1px solid #c7a17f;border-bottom:1px solid #c7a17f;
+  font-size:12px;
+}
+body.revolution-home .manifesto-strip span:nth-child(even){color:#9d6b3f}
+
+/* 本文セクション：象牙紙、墨色、明確な区切り */
+body.revolution-home main>section:not(.opening){
+  color:#30212a;
+  background:#f7f0e5;
+  border-color:rgba(166,129,75,.34);
+}
+body.revolution-home .section-index{color:#70565c}
+body.revolution-home .section-index span:first-child{color:#6b2039}
+body.revolution-home .index-line{background:#bda17b}
+body.revolution-home .micro-label{
+  color:#7a4a59;font-size:11px;font-weight:600;
+  letter-spacing:.14em;
+}
+body.revolution-home h2{color:#452032}
+body.revolution-home h2 em{color:#8b3c55}
+body.revolution-home .principle{
+  background:linear-gradient(110deg,#fbf6ed 0%,#f3e8dc 100%) !important;
+}
+body.revolution-home .principle-content{color:#30212a}
+body.revolution-home .principle-content h2{color:#452032}
+body.revolution-home .principle-content>p:not(.micro-label){
+  color:#4e3d43;font-size:16px;line-height:2.15;
+}
+body.revolution-home .principle-lead{color:#5b3442}
+body.revolution-home .principle-lead:first-letter{color:#8b3c55}
+body.revolution-home .principle-foot{
+  color:#6b2039;border-top-color:rgba(107,32,57,.25);
+}
+body.revolution-home .principle-vertical{color:#8a6b62}
+
+/* 案内カード：淡い紙色と深い文字色でリンクを見分けやすく */
+body.revolution-home .gateway{
+  background:#f0e5d8 !important;
+}
+body.revolution-home .gateway-heading h2{color:#452032}
+body.revolution-home .gateway-heading>p{color:#5d4b50}
+body.revolution-home .gateway-list{gap:1rem}
+body.revolution-home .gateway-item,
+body.revolution-home .gateway-item.gateway-main,
+body.revolution-home .gateway-item:nth-child(2){
+  color:#35232b;
+  background:linear-gradient(145deg,#fffaf1,#eadbce);
+  border:1px solid #cbb293;
+  box-shadow:0 8px 22px rgba(65,30,43,.055);
+}
+body.revolution-home .gateway-item.gateway-main{
+  color:#fff4e7;
+  background:linear-gradient(145deg,#6b2039,#471a2c);
+  border-color:#a6814b;
+}
+body.revolution-home .gateway-item:before{border-color:rgba(166,129,75,.38)}
+body.revolution-home .gateway-item:after{background:rgba(166,129,75,.08)}
+body.revolution-home .gateway-item:hover{
+  border-color:#8b3c55;
+  box-shadow:0 14px 32px rgba(65,30,43,.13);
+  transform:translateY(-3px);
+}
+body.revolution-home .gateway-no{color:#8b3c55}
+body.revolution-home .gateway-label{color:#805c62}
+body.revolution-home .gateway-title{color:#452032}
+body.revolution-home .gateway-desc{color:#5b4a4f;line-height:1.9}
+body.revolution-home .gateway-arrow{color:#8b3c55}
+body.revolution-home .gateway-watermark{color:rgba(107,32,57,.075)}
+body.revolution-home .gateway-main .gateway-no,
+body.revolution-home .gateway-main .gateway-label,
+body.revolution-home .gateway-main .gateway-title,
+body.revolution-home .gateway-main .gateway-desc,
+body.revolution-home .gateway-main .gateway-arrow{color:#fff4e7}
+body.revolution-home .gateway-main .gateway-label{color:#f0d3a4}
+body.revolution-home .gateway-main .gateway-watermark{color:rgba(255,244,231,.08)}
+
+/* 公表記録：罫線と行のホバーを明確に */
+body.revolution-home .record-section{background:#fbf6ed !important}
+body.revolution-home .record-head h2{color:#452032}
+body.revolution-home .record-head>a,
+body.revolution-home .director-bio>a,
+body.revolution-home .constitution-section>a{
+  color:#762b45;border-bottom-color:#b88b68;
+}
+body.revolution-home .record-body{
+  background:#fffaf2;border:1px solid #d4c0a4;
+}
+body.revolution-home .record-date{
+  color:#4b2936;background:#f0e3d6;border-right-color:#d4c0a4;
+}
+body.revolution-home .record-date strong{color:#6b2039}
+body.revolution-home .record-date small{color:#785b5e}
+body.revolution-home .record-lines a{
+  color:#30212a;border-bottom-color:#e1d2bf;
+}
+body.revolution-home .record-lines a:hover{background:#f5e7e1}
+body.revolution-home .record-type{
+  color:#762b45;background:#f1e0e1;border-color:#d8b7b9;
+}
+body.revolution-home .record-name{color:#30212a;font-size:14px}
+body.revolution-home .record-status{color:#68565b}
+body.revolution-home .record-lines b{color:#8b3c55}
+body.revolution-home .record-note{color:#68565b}
+
+/* 長官室：落ち着いた淡色の誌面 */
+body.revolution-home .director-section{
+  background:linear-gradient(135deg,#f3e7dc,#fbf6ed) !important;
+}
+body.revolution-home .director-heading h2{color:#452032}
+body.revolution-home .director-heading>span{color:#68565b}
+body.revolution-home .director-seal{
+  color:#6b2039;background:#f8efe3;border-color:#a6814b;
+  box-shadow:inset 0 0 0 7px rgba(166,129,75,.09);
+}
+body.revolution-home .director-seal:before{border-color:rgba(166,129,75,.48)}
+body.revolution-home .director-seal small{color:#6b2039}
+body.revolution-home .director-role{color:#805c62}
+body.revolution-home .director-bio h3{color:#452032}
+body.revolution-home .director-bio>p:not(.director-role){color:#4e3d43;font-size:15px;line-height:2}
+body.revolution-home blockquote{
+  color:#4b2936;background:#fffaf2;border-left-color:#a6814b;
+}
+body.revolution-home blockquote:before{border-color:rgba(166,129,75,.28)}
+body.revolution-home blockquote>span{color:#a6814b}
+body.revolution-home blockquote p{color:#4b2936}
+body.revolution-home blockquote small{color:#805c62}
+
+/* 憲法の章：濃い臙脂を一点だけ使い、淡い文字で読む */
+body.revolution-home .constitution-section{
+  color:#fff4e7 !important;
+  background:#542037 !important;
+  border-top:1px solid #b58b59;border-bottom:1px solid #b58b59;
+}
+body.revolution-home .constitution-section .micro-label{color:#edcfa0}
+body.revolution-home .constitution-section h2{color:#fff4e7}
+body.revolution-home .constitution-section p:not(.micro-label){color:#f0dfd4;line-height:2}
+body.revolution-home .constitution-glyph{
+  color:#f0d6aa;border-color:#c6a16c;background:rgba(255,255,255,.045);
+}
+body.revolution-home .constitution-section>a{color:#fff4e7;border-bottom-color:#d9b779}
+
+/* 関連機關：カードは明るく、リンク文字は濃く */
+body.revolution-home .related-section{background:#f7f0e5 !important}
+body.revolution-home .related-heading h2{color:#452032}
+body.revolution-home .related-links>a{
+  color:#30212a;background:#fffaf2;border:1px solid #d4c0a4;
+}
+body.revolution-home .related-links>a:hover{
+  background:#f1e2dc;border-color:#a87970;
+}
+body.revolution-home .related-links>a>span{
+  color:#fff4e7;background:#6b2039;border-color:#a6814b;
+}
+body.revolution-home .related-links strong{color:#452032}
+body.revolution-home .related-links small{color:#68565b}
+body.revolution-home .related-links b{color:#8b3c55}
+
+/* 奥付：暗い臙脂を締め色に */
+body.revolution-home .new-footer{
+  color:#f8eddf;background:#321722;border-top:2px solid #a6814b;
+}
+body.revolution-home .new-footer:before{border-color:rgba(224,201,157,.15)}
+body.revolution-home .footer-brand>span{
+  color:#fff4e7;background:#6b2039;border-color:#c6a16c;
+}
+body.revolution-home .footer-brand small{color:#e2cba6}
+body.revolution-home .footer-brand strong{color:#fff4e7}
+body.revolution-home .footer-brand p{color:#e5cfc8}
+body.revolution-home .footer-nav a{color:#f2e2d4}
+body.revolution-home .footer-nav a:hover{color:#f0c5cc}
+body.revolution-home .footer-bottom{
+  color:#e4cdbb;border-top-color:rgba(224,201,157,.28);
+}
+
+/* 索引：検索・項目とも十分なコントラスト */
+body.revolution-home .index-overlay{background:rgba(31,12,21,.78)}
+body.revolution-home .index-panel{
+  color:#30212a;background:linear-gradient(145deg,#fffaf2,#f0e1d2);
+  border-color:#a6814b;box-shadow:0 25px 100px rgba(38,12,23,.38);
+}
+body.revolution-home .index-panel:before{border-color:rgba(137,92,52,.24)}
+body.revolution-home .index-panel-top{color:#762b45}
+body.revolution-home .index-panel-top button{color:#4b1a2c}
+body.revolution-home .index-panel h2{color:#42172b}
+body.revolution-home .index-search-label{color:#5d454b}
+body.revolution-home #index-search{
+  color:#30212a;background:#fffdf8;border-color:#ad8d72;
+}
+body.revolution-home #index-search::placeholder{color:#79686b}
+body.revolution-home .index-results a{
+  color:#42172b;background:#fffaf2;border-color:#ddcbb5;font-size:13px;
+}
+body.revolution-home .index-results a:hover{background:#f1e2dc;border-color:#a87970}
+body.revolution-home .index-results a span{color:#805c42}
+body.revolution-home .index-panel-foot,
+body.revolution-home .index-empty{color:#68565b}
+
+/* 操作性と可読性：文字サイズ・フォーカス・動き */
+body.revolution-home p{overflow-wrap:anywhere}
+body.revolution-home a:focus-visible,
+body.revolution-home button:focus-visible,
+body.revolution-home input:focus-visible{
+  outline:3px solid #a45a70;outline-offset:4px;
+}
+body.revolution-home .gateway-item,
+body.revolution-home .related-links>a,
+body.revolution-home .record-lines a{transition:background-color .2s ease,border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+@media(max-width:700px){
+  body.revolution-home{font-size:15px;line-height:1.9}
+  body.revolution-home .worldline{color:#f0dfc9}
+  body.revolution-home .new-nav .nav a{font-size:12px}
+  body.revolution-home .principle-content>p:not(.micro-label){font-size:15px}
+  body.revolution-home .record-name{font-size:13px}
+  body.revolution-home .record-lines a{color:#30212a}
+}
+@media(prefers-reduced-motion:reduce){
+  body.revolution-home .gateway-item:hover,
+  body.revolution-home .related-links>a:hover{transform:none}
+}
