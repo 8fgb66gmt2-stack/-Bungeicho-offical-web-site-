@@ -275,3 +275,21 @@ body:not(.revolution-home) a:not([class]):hover{color:#a02c4d}
  body:not(.revolution-home) .chief-profile-aside dl{grid-template-columns:1fr}
  body:not(.revolution-home) .section p,body:not(.revolution-home) .section li{overflow-wrap:anywhere}
 }
+
+/* Policy framework on the home page: substantive editorial cards */
+.revolution-home .policy-section{max-width:1300px;margin:0 auto;padding:clamp(3.5rem,7vw,6.5rem) clamp(1.2rem,4vw,4rem);border-bottom:1px solid var(--lr-line)}
+.revolution-home .policy-section .record-head{align-items:end;margin-bottom:2rem}
+.revolution-home .policy-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--lr-gold);border-bottom:1px solid var(--lr-gold)}
+.revolution-home .policy-columns article{position:relative;padding:2rem clamp(1rem,2.2vw,2rem);border-right:1px solid var(--lr-line)}
+.revolution-home .policy-columns article:last-child{border-right:0}
+.revolution-home .policy-number{display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--lr-gold);color:var(--lr-wine);font:1.1rem var(--lr-serif);margin-bottom:1.4rem}
+.revolution-home .policy-columns h3{font:400 clamp(1.25rem,2vw,1.7rem)/1.6 var(--lr-serif);letter-spacing:.08em;color:var(--lr-wine);margin:.4rem 0 1rem}
+.revolution-home .policy-columns article>p:not(.micro-label){font-size:.86rem;line-height:2.1;color:#72595a}
+.revolution-home .policy-columns a{display:inline-block;margin-top:.7rem;padding-bottom:.3rem;border-bottom:1px solid var(--lr-gold);color:var(--lr-wine);font-size:.78rem;text-decoration:none}
+.revolution-home .policy-columns a:hover{color:#a02c4d}
+.revolution-home .policy-footnote{margin:1.2rem 0 0;color:#8b7166;font-size:.72rem;line-height:1.9}
+@media(max-width:760px){
+ .revolution-home .policy-columns{grid-template-columns:1fr}
+ .revolution-home .policy-columns article{border-right:0;border-bottom:1px solid var(--lr-line);padding:1.5rem .5rem}
+ .revolution-home .policy-columns article:last-child{border-bottom:0}
+}
