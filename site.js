@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       ["support.html","文藝振興・作家支援"],
       ["awards.html","文藝賞・表彰"],
       ["archive.html","文藝資料室"],
+      ["jinbutsuroku.html","文學・藝術人物録"],
       ["notices.html","告示・公表資料"],
       ["staff.html","組織・人事"],
       ["links.html","関連機關"],
