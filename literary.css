@@ -250,3 +250,28 @@ body:not(.revolution-home) .skip-link:focus{position:absolute;left:1rem;top:1rem
  html{scroll-behavior:auto}
  *,*:before,*:after{transition:none!important;animation:none!important}
 }
+
+/* Finishing details: the small things that make the archive feel authored */
+body:not(.revolution-home) .agency-code{display:block;margin-bottom:.85rem;font:8px/1.7 var(--lr-sans);letter-spacing:.14em;color:#9b7848}
+body:not(.revolution-home) .section h3 a{font:inherit;color:inherit;text-decoration:none;border-bottom:1px solid rgba(189,154,97,.7)}
+body:not(.revolution-home) .section h3 a:hover{color:#9a2d4c}
+body:not(.revolution-home) .empty-state{padding:1.25rem 1.4rem;border:1px dashed #c9ad7f;background:rgba(238,224,200,.45);color:#765f61;font-size:.86rem;line-height:2}
+body:not(.revolution-home) .chief-profile-quote{position:relative;border-top:1px solid var(--lr-gold);border-bottom:1px solid var(--lr-gold);background:linear-gradient(110deg,#eee0c8,rgba(255,250,240,.7));color:#5d2038;font:1.05rem/2.1 var(--lr-serif);letter-spacing:.04em;padding:1.3rem 1.6rem}
+body:not(.revolution-home) .chief-profile-aside,body:not(.revolution-home) .chief-profile-history,body:not(.revolution-home) .chief-biography{border-color:var(--lr-line)}
+body:not(.revolution-home) .profile-aside-ornament,body:not(.revolution-home) .history-heading span,body:not(.revolution-home) .biography-kicker,body:not(.revolution-home) .biography-index{color:#987347;letter-spacing:.14em}
+body:not(.revolution-home) .chief-profile-aside h3,body:not(.revolution-home) .chief-profile-history h3,body:not(.revolution-home) .biography-entry h3{font-family:var(--lr-serif);font-weight:400;color:var(--lr-wine)}
+body:not(.revolution-home) .chief-profile-aside dt{color:#7a4a55}
+body:not(.revolution-home) .profile-rumour{border-left:2px solid var(--lr-gold);background:#eee0c8;padding:1rem}
+body:not(.revolution-home) .history-list li{border-bottom:1px solid rgba(210,189,153,.75)}
+body:not(.revolution-home) .history-mark{border:1px solid var(--lr-gold);color:#825b49;background:#f3e7d2}
+body:not(.revolution-home) .biography-entry{border-top:1px solid var(--lr-line);padding-top:1.25rem}
+body:not(.revolution-home) .biography-disclaimer,body:not(.revolution-home) .chief-profile-note{font-size:.75rem;line-height:2;color:#765f61}
+body:not(.revolution-home) table{max-width:100%}
+body:not(.revolution-home) th{font-family:var(--lr-serif)}
+body:not(.revolution-home) a:not([class]){color:var(--lr-wine);text-decoration-thickness:1px;text-underline-offset:3px}
+body:not(.revolution-home) a:not([class]):hover{color:#a02c4d}
+@media(max-width:600px){
+ body:not(.revolution-home) .chief-profile-quote{padding:1rem;font-size:.94rem}
+ body:not(.revolution-home) .chief-profile-aside dl{grid-template-columns:1fr}
+ body:not(.revolution-home) .section p,body:not(.revolution-home) .section li{overflow-wrap:anywhere}
+}
