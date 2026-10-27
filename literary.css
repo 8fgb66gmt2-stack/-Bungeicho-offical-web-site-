@@ -1,0 +1,55 @@
+/* 玲瓏浪漫・文藝廳共通意匠 */
+:root{--lr-wine:#65152f;--lr-gold:#bd9a61;--lr-paper:#f3ead9}
+body:not(.revolution-home){background-color:var(--lr-paper);background-image:linear-gradient(90deg,rgba(101,21,47,.025) 1px,transparent 1px),linear-gradient(rgba(101,21,47,.018) 1px,transparent 1px);background-size:38px 38px}
+body:not(.revolution-home) .hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 80% 30%,#71213d,#351021 55%,#180810);min-height:280px}
+body:not(.revolution-home) .hero:after{content:'文';position:absolute;right:8%;top:50%;transform:translateY(-56%);font-size:clamp(10rem,27vw,22rem);line-height:1;color:rgba(221,190,137,.08);pointer-events:none}
+body:not(.revolution-home) .hero-inner{position:relative;z-index:1;padding-top:3rem;padding-bottom:3rem}
+body:not(.revolution-home) .hero h1{font-weight:400;letter-spacing:.13em}
+body:not(.revolution-home) .hero p{max-width:720px;line-height:2.2;color:#e8d8c2}
+body:not(.revolution-home) .eyebrow{letter-spacing:.24em;color:#d7b984}
+body:not(.revolution-home) .breadcrumb{font-size:.72rem;color:#8d7068;border-bottom:1px solid #d4c09c;padding:1rem max(1.2rem,calc((100% - 1120px)/2))}
+body:not(.revolution-home) main{max-width:1120px;margin:0 auto;padding:0 clamp(1rem,3vw,2rem) 4rem}
+body:not(.revolution-home) .page-title{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:400;letter-spacing:.12em;color:#4b172c;border-bottom:1px solid var(--lr-gold);padding:2.4rem 0 1.2rem;margin:0 0 1.5rem}
+body:not(.revolution-home) .section{margin:2rem 0 3rem;padding:clamp(1.2rem,3vw,2.4rem);background:rgba(255,250,240,.7);border:1px solid #d1bb94;box-shadow:0 8px 24px rgba(58,20,34,.035);position:relative}
+body:not(.revolution-home) .section:before{content:'';position:absolute;inset:8px;border:1px solid rgba(189,154,97,.23);pointer-events:none}
+body:not(.revolution-home) .section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;border-bottom:1px solid #d2bd99;padding-bottom:.8rem;margin-bottom:1.5rem}
+body:not(.revolution-home) .section-heading h2{font-size:clamp(1.15rem,2.5vw,1.65rem);font-weight:400;letter-spacing:.1em;color:#5b1b34;margin:0}
+body:not(.revolution-home) .section-heading span{font:8px/1.5 var(--sans);letter-spacing:.18em;color:#a18255}
+body:not(.revolution-home) .grid{gap:1px;background:#cdb58c;border:1px solid #cdb58c}
+body:not(.revolution-home) .card{background:#f9f2e4;padding:1.35rem;position:relative;min-height:180px}
+body:not(.revolution-home) .card:before{content:'';position:absolute;top:0;left:0;width:28px;height:2px;background:#8d2948}
+body:not(.revolution-home) .card h3{font-weight:400;letter-spacing:.08em;color:#5b1b34;font-size:1.05rem;margin:.2rem 0 .7rem}
+body:not(.revolution-home) .card p,body:not(.revolution-home) .section>p{font-size:.86rem;line-height:2.1;color:#6e5959}
+body:not(.revolution-home) .pill{display:inline-block;margin-top:.5rem;padding:.2rem .55rem;border:1px solid #c4a777;color:#825b49;font:9px var(--sans);background:#f3e7d2}
+body:not(.revolution-home) .statute{width:100%;border-collapse:collapse;font-size:.85rem;line-height:1.9}
+body:not(.revolution-home) .statute th,body:not(.revolution-home) .statute td{padding:1rem;border-bottom:1px solid #d9c6a5;text-align:left;vertical-align:top}
+body:not(.revolution-home) .statute th{width:24%;font-weight:400;color:#6b263e;background:rgba(226,207,173,.3)}
+body:not(.revolution-home) .statute td{color:#5e4b4d}
+body:not(.revolution-home) .section ol,body:not(.revolution-home) .section ul{padding-left:1.5rem;color:#665255;font-size:.87rem;line-height:2.2}
+body:not(.revolution-home) .notice{border-left:3px solid var(--lr-gold);background:#eee0c8;padding:1rem 1.2rem;color:#674b4c;font-size:.82rem;line-height:2}
+body:not(.revolution-home) .news-list{list-style:none;padding:0!important;margin:0}
+body:not(.revolution-home) .news-list li{display:grid;grid-template-columns:145px 1fr;gap:1rem;padding:1.2rem 0;border-bottom:1px solid #d8c5a5}
+body:not(.revolution-home) .news-list .date{font:10px var(--sans);color:#8d715b;padding-top:.25rem}
+body:not(.revolution-home) .news-list strong{display:block;font-weight:400;color:#5b1b34}
+body:not(.revolution-home) .news-list p{margin:.4rem 0 0;font-size:.82rem;color:#796465;line-height:2}
+body:not(.revolution-home) .tag{display:inline-block;font:8px var(--sans);border:1px solid #c1a274;color:#8b6847;padding:.15rem .45rem;margin:0 .5rem .35rem 0}
+.lr-kicker{font:9px var(--sans);letter-spacing:.2em;color:#a18255;margin:0 0 .8rem}
+.lr-lead{font-size:1rem;line-height:2.25;letter-spacing:.035em;color:#4f303a;max-width:850px}
+.lr-quote{margin:2rem 0;padding:1.6rem clamp(1.2rem,4vw,3rem);border-top:1px solid var(--lr-gold);border-bottom:1px solid var(--lr-gold);background:linear-gradient(100deg,rgba(230,213,186,.6),rgba(255,250,240,.25));color:#5d2038}
+.lr-quote p{font-size:clamp(1.1rem,2.6vw,1.7rem);line-height:1.9;letter-spacing:.12em;margin:.4rem 0}
+.lr-quote small{font:9px var(--sans);letter-spacing:.15em;color:#927451}
+.lr-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem}
+.lr-number{font:2rem 'Yu Mincho',serif;color:#b18c5a;line-height:1}
+.lr-card-label{font:8px var(--sans);letter-spacing:.17em;color:#a18255}
+.lr-list{list-style:none!important;padding:0!important}
+.lr-list li{position:relative;padding:.7rem .4rem .7rem 1.5rem!important;border-bottom:1px solid #dfceb0}
+.lr-list li:before{content:'✳';position:absolute;left:0;color:#a57d4d}
+.lr-timeline{border-left:1px solid #c9aa78;margin:1.5rem 0 1.5rem .4rem;padding-left:1.5rem}
+.lr-timeline article{position:relative;padding:0 0 1.4rem}
+.lr-timeline article:before{content:'';position:absolute;left:-1.82rem;top:.45rem;width:8px;height:8px;border:1px solid #a67d4b;background:var(--lr-paper);transform:rotate(45deg)}
+.lr-timeline h3{font-weight:400;color:#5b1b34;font-size:1rem;margin:0 0 .3rem}
+.lr-timeline p{font-size:.84rem;line-height:2;color:#786264;margin:.2rem 0}
+.lr-smallprint{font-size:.72rem!important;line-height:2!important;color:#8a7470!important}
+.lr-stamp{display:inline-block;border:1px solid #a9786c;color:#8a3b4d;padding:.35rem .8rem;letter-spacing:.12em;font-size:.72rem;transform:rotate(-2deg)}
+.lr-rule{height:1px;background:linear-gradient(90deg,#b99764,transparent);margin:1.6rem 0}
+@media(max-width:680px){body:not(.revolution-home) .hero-inner{padding-top:2.5rem;padding-bottom:2.5rem}body:not(.revolution-home) .section{padding:1.1rem;margin:1.2rem 0 2rem}body:not(.revolution-home) .statute th,body:not(.revolution-home) .statute td{padding:.7rem .55rem}body:not(.revolution-home) .statute th{width:31%}.lr-columns{grid-template-columns:1fr}.news-list li{grid-template-columns:1fr;gap:.25rem}}
