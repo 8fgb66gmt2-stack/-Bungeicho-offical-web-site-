@@ -9,13 +9,15 @@
  const $=(s,root=document)=>root.querySelector(s);
  const $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
  let noticeTimer;
+ let bookmarkReturnFocus=null;
+ let bookmarkPreviousOverflow="";
  function notify(message,stamp=false){
   let el=$("#rr-notice");
   if(!el){el=document.createElement("div");el.id="rr-notice";el.className="rr-notice";el.setAttribute("role","status");el.setAttribute("aria-live","polite");document.body.append(el)}
   el.textContent=message;el.classList.toggle("rr-stamp",stamp);el.classList.remove("is-visible","is-stamped");void el.offsetWidth;el.classList.add("is-visible");if(stamp)el.classList.add("is-stamped");
   clearTimeout(noticeTimer);noticeTimer=setTimeout(()=>el.classList.remove("is-visible"),2600);
  }
- function readBookmarks(){try{const data=JSON.parse(safeRead(STORAGE.bookmarks,"[]"));return Array.isArray(data)?data.filter(x=>x&&typeof x.url==="string"&&typeof x.title==="string"):[]}catch{return[]}}
+ function readBookmarks(){try{const data=JSON.parse(safeRead(STORAGE.bookmarks,"[]"));if(!Array.isArray(data))return[];return data.map(item=>{if(!item||typeof item.url!=="string"||typeof item.title!=="string")return null;try{const url=new URL(item.url,location.href);if(url.origin!==location.origin||!/^https?:$/.test(url.protocol))return null;return{url:url.pathname+url.search+url.hash,title:item.title.slice(0,240)}}catch{return null}}).filter(Boolean)}catch{return[]}}
  function writeBookmarks(list){return safeWrite(STORAGE.bookmarks,JSON.stringify(list))}
  function canonicalUrl(url){const u=new URL(url,location.href);return u.origin===location.origin?u.pathname+u.search+u.hash:u.href}
  function getTitle(){const h=$("h1");return (h&&h.textContent.trim())||document.title||location.pathname}
@@ -26,23 +28,59 @@
   if(!writeBookmarks(list)){notify("このブラウザでは栞を保存できませんでした");return}
   notify("文藝廳の栞に記録しました",true);
  }
+
+ function closeBookmarks(back){
+  if(!back||back.hidden)return;
+  back.hidden=true;
+  document.body.style.overflow=bookmarkPreviousOverflow;
+  if(bookmarkReturnFocus&&typeof bookmarkReturnFocus.focus==="function")bookmarkReturnFocus.focus();
+  bookmarkReturnFocus=null;
+ }
+ function renderBookmarks(back){
+  const target=$("[data-rr-bookmark-content]",back),list=readBookmarks();
+  if(!target)return;
+  if(!list.length){
+   target.innerHTML='<p class="rr-empty">まだ栞はありません。ページ右下の「栞」を押して保存できます。</p>';
+   return;
+  }
+  target.innerHTML='<ul class="rr-bookmark-list">'+list.map((item,i)=>'<li class="rr-bookmark-item"><a href="'+esc(item.url)+'">'+esc(item.title)+'</a><button type="button" data-rr-remove="'+i+'">解除</button></li>').join("")+'</ul>';
+  $$("[data-rr-remove]",target).forEach(button=>button.addEventListener("click",()=>{
+   const next=readBookmarks();next.splice(Number(button.dataset.rrRemove),1);
+   if(!writeBookmarks(next)){notify("このブラウザでは栞を更新できませんでした");return}
+   renderBookmarks(back);notify("栞を取り外しました");
+  }));
+ }
  function openBookmarks(){
   let back=$("#rr-bookmarks-dialog");
   if(!back){
    back=document.createElement("div");back.id="rr-bookmarks-dialog";back.className="rr-dialog-backdrop";back.hidden=true;
-   back.innerHTML='<section class="rr-dialog" role="dialog" aria-modal="true" aria-labelledby="rr-bookmarks-title"><div class="rr-dialog-head"><h2 id="rr-bookmarks-title">文藝廳の栞</h2><button type="button" data-rr-close aria-label="閉じる">閉じる ×</button></div><p class="rr-dialog-intro">このブラウザに保存したページです。端末間の同期は行われません。</p><div data-rr-bookmark-content></div><div style="display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap;margin-top:1rem"><button type="button" data-rr-clear>栞をすべて消去</button></div></section>';
+   back.innerHTML='<section class="rr-dialog" role="dialog" aria-modal="true" aria-labelledby="rr-bookmarks-title" tabindex="-1"><div class="rr-dialog-head"><h2 id="rr-bookmarks-title">文藝廳の栞</h2><button type="button" data-rr-close aria-label="閉じる">閉じる ×</button></div><p class="rr-dialog-intro">このブラウザに保存したページです。端末間の同期は行われません。</p><div data-rr-bookmark-content></div><div class="rr-dialog-actions"><button type="button" data-rr-clear>栞をすべて消去</button></div></section>';
    document.body.append(back);
-   back.addEventListener("click",e=>{if(e.target===back||e.target.closest("[data-rr-close]"))back.hidden=true});
-   back.querySelector("[data-rr-clear]").addEventListener("click",()=>{if(confirm("保存した栞をすべて消去しますか？")){writeBookmarks([]);renderBookmarks();notify("栞をすべて消去しました")}});
-   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&back&&!back.hidden)back.hidden=true});
+   back.addEventListener("click",event=>{
+    if(event.target===back||event.target instanceof Element&&event.target.closest("[data-rr-close]"))closeBookmarks(back);
+   });
+   back.addEventListener("keydown",event=>{
+    if(back.hidden)return;
+    if(event.key==="Escape"){event.preventDefault();closeBookmarks(back);return}
+    if(event.key!=="Tab")return;
+    const focusable=$$("a[href]:not([hidden]),button:not([disabled]):not([hidden]),input:not([disabled]):not([hidden]),select:not([disabled]):not([hidden]),[tabindex]:not([tabindex='-1']):not([hidden])",back).filter(el=>el.getClientRects().length>0);
+    if(!focusable.length){event.preventDefault();return}
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+   });
+   $("[data-rr-clear]",back).addEventListener("click",()=>{
+    if(!confirm("保存した栞をすべて消去しますか？"))return;
+    if(!writeBookmarks([])){notify("このブラウザでは栞を消去できませんでした");return}
+    renderBookmarks(back);notify("栞をすべて消去しました");
+   });
   }
-  function renderBookmarks(){
-   const target=back.querySelector("[data-rr-bookmark-content]"),list=readBookmarks();
-   if(!list.length){target.innerHTML='<p class="rr-empty">まだ栞はありません。ページ右下の「栞」を押して保存できます。</p>';return}
-   target.innerHTML='<ul class="rr-bookmark-list">'+list.map((item,i)=>'<li class="rr-bookmark-item"><a href="'+esc(item.url)+'">'+esc(item.title)+'</a><button type="button" data-rr-remove="'+i+'">解除</button></li>').join("")+'</ul>';
-   $$("[data-rr-remove]",target).forEach(btn=>btn.addEventListener("click",()=>{const next=readBookmarks();next.splice(Number(btn.dataset.rrRemove),1);writeBookmarks(next);renderBookmarks();notify("栞を取り外しました")}));
-  }
-  renderBookmarks();back.hidden=false;const close=$("[data-rr-close]",back);if(close)close.focus();
+  bookmarkReturnFocus=document.activeElement;
+  bookmarkPreviousOverflow=document.body.style.overflow;
+  renderBookmarks(back);
+  back.hidden=false;
+  document.body.style.overflow="hidden";
+  const close=$("[data-rr-close]",back);if(close)close.focus();
  }
  function setFontSize(size,silent=false){
   const allowed=["small","normal","large"].includes(size)?size:"normal";
@@ -61,31 +99,38 @@
   $$("[data-rr-font]",bar).forEach(b=>b.addEventListener("click",()=>setFontSize(b.dataset.rrFont)));
   setFontSize(safeRead(STORAGE.font,"normal"),true);
  }
+
  function injectClock(){
   if($("#rr-clock"))return;
   const line=$(".worldline")||$(".topline");
-  const clock=document.createElement("aside");clock.id="rr-clock";clock.className="rr-clock";clock.setAttribute("aria-label","時報と帝國暦");
-  const source=(line&&line.textContent)||document.body.textContent||"";
+  const footerEra=$(".footer-bottom")||$(".footer-small");
+  const source=[line&&line.textContent,footerEra&&footerEra.textContent].filter(Boolean).join(" ");
   const era=source.match(/玲瓏\s*[0-9０-９一二三四五六七八九十百千]+\s*年/);
   const imperial=source.match(/帝國暦\s*[0-9０-９一二三四五六七八九十百千]+\s*年/);
-  clock.innerHTML='<span class="rr-clock-seal" aria-hidden="true">文</span><strong>文藝廳時報</strong><span class="rr-clock-era">'+esc(era?era[0]:"玲瓏時代")+'</span><span aria-hidden="true">／</span><span class="rr-clock-imperial">'+esc(imperial?imperial[0]:"帝國暦")+'</span><span class="rr-clock-time" aria-live="off"></span>';
+  const clock=document.createElement("aside");clock.id="rr-clock";clock.className="rr-clock";
+  clock.setAttribute("aria-label","時報と帝國暦");
+  clock.innerHTML='<span class="rr-clock-seal" aria-hidden="true">文</span><strong>文藝廳時報</strong><span class="rr-clock-era">'+esc(era?era[0]:"玲瓏時代")+'</span><span aria-hidden="true">／</span><span class="rr-clock-imperial">'+esc(imperial?imperial[0]:"帝國暦")+'</span><span class="rr-clock-time"></span>';
   if(line)line.insertAdjacentElement("afterend",clock);else document.body.insertAdjacentElement("afterbegin",clock);
-  const update=()=>{const now=new Date();const time=now.toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});const el=$(".rr-clock-time",clock);if(el)el.textContent="現在時刻 "+time};
+  const update=()=>{
+   const now=new Date(),time=now.toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
+   const el=$(".rr-clock-time",clock);if(el)el.textContent="現在時刻 "+time;
+  };
   update();window.setInterval(update,1000);
  }
+
  function injectCalendar(){
-  if($("#rr-calendar"))return;
-  const host=document.createElement("section");host.id="rr-calendar-slot";host.className="rr-calendar-slot";
+  if(!document.body.classList.contains("revolution-home")||$("#rr-calendar"))return;
+  const host=document.createElement("div");host.id="rr-calendar-slot";host.className="rr-calendar-slot";
   const now=new Date(),year=now.getFullYear(),month=now.getMonth(),today=now.getDate();
   const first=new Date(year,month,1).getDay(),days=new Date(year,month+1,0).getDate();
   const weekdays=["日","月","火","水","木","金","土"];
-  let cells=weekdays.map(d=>'<span class="rr-weekday">'+d+'</span>').join("");
+  let cells=weekdays.map(day=>'<span class="rr-weekday">'+day+'</span>').join("");
   for(let i=0;i<first;i++)cells+='<span aria-hidden="true"></span>';
-  for(let d=1;d<=days;d++)cells+='<span'+(d===today?' class="rr-today" aria-current="date"':'')+'>'+d+'</span>';
+  for(let day=1;day<=days;day++)cells+='<span'+(day===today?' class="rr-today" aria-current="date"':'')+'>'+day+'</span>';
   const label=now.toLocaleDateString("ja-JP",{year:"numeric",month:"long"});
-  host.innerHTML='<section class="rr-calendar" id="rr-calendar" aria-label="文藝廳の小さな暦"><div class="rr-calendar-head"><h2>文藝廳の小さな暦</h2><span>THE MONTHLY ALMANAC</span></div><div class="rr-calendar-grid" aria-label="'+esc(label)+'">'+cells+'</div><p class="rr-calendar-foot">端末の暦に基づく月間表示。帝國暦の換算・記念日設定は行っていません。</p></section>';
-  const main=$("#main")||$("main");
-  if(main)main.insertAdjacentElement("afterend",host);else document.body.append(host);
+  host.innerHTML='<section class="rr-calendar" id="rr-calendar" aria-label="文藝廳の小さな暦"><div class="rr-calendar-head"><h2>文藝廳の小さな暦</h2><span>THE MONTHLY ALMANAC</span></div><div class="rr-calendar-grid" role="group" aria-label="'+esc(label)+'">'+cells+'</div><p class="rr-calendar-foot">端末の暦に基づく月間表示。帝國暦の換算・記念日設定は行っていません。</p></section>';
+  const main=$("#main")||$("main"),related=main&&$(".related-section",main);
+  if(related)main.insertBefore(host,related);else if(main)main.insertAdjacentElement("afterend",host);else document.body.append(host);
  }
  function addPetals(parent,count=18){
   if(reduced||!parent)return;
@@ -93,25 +138,43 @@
   for(let i=0;i<count;i++){const p=document.createElement("i");p.className="rr-petal";p.style.left=(Math.random()*100)+"%";p.style.setProperty("--duration",(3.2+Math.random()*2.8)+"s");p.style.setProperty("--rotation",(Math.random()*180)+"deg");p.style.setProperty("--drift",(-70+Math.random()*140)+"px");p.style.animationDelay=(Math.random()*.7)+"s";layer.append(p)}
   window.setTimeout(()=>layer.remove(),7000);
  }
+
  function injectIntro(){
   if(!document.body.classList.contains("revolution-home")||reduced||safeRead(STORAGE.intro,""))return;
-  const intro=document.createElement("div");intro.id="rr-intro";intro.className="rr-intro";intro.setAttribute("role","dialog");intro.setAttribute("aria-label","文藝廳");
-  intro.innerHTML='<div class="rr-intro-inner"><p class="rr-intro-kicker">THE IMPERIAL BUREAU OF LITERATURE</p><h1 class="rr-intro-title">文藝廳</h1><div class="rr-intro-rule"></div><p class="rr-intro-sub">文ヲ興シ、思想ヲ遺ス。</p><button class="rr-intro-skip" type="button">閲覧を開始する</button></div>';
-  document.body.append(intro);addPetals(intro,22);
+  const intro=document.createElement("div");intro.id="rr-intro";intro.className="rr-intro";
+  intro.setAttribute("role","dialog");intro.setAttribute("aria-modal","true");intro.setAttribute("aria-label","文藝廳");
+  intro.innerHTML='<div class="rr-intro-inner"><p class="rr-intro-kicker">THE IMPERIAL BUREAU OF LITERATURE</p><p class="rr-intro-title" aria-hidden="true">文藝廳</p><div class="rr-intro-rule"></div><p class="rr-intro-sub">文ヲ興シ、思想ヲ遺ス。</p><button class="rr-intro-skip" type="button">閲覧を開始する</button></div>';
+  const priorOverflow=document.body.style.overflow;
+  document.body.append(intro);document.body.style.overflow="hidden";addPetals(intro,18);
+  const button=$(".rr-intro-skip",intro),title=$("#opening-title");
   let finished=false;
-  const finish=()=>{if(finished)return;finished=true;safeWrite(STORAGE.intro,"1");try{sessionStorage.setItem("rr-intro-session","1")}catch{}intro.classList.add("is-leaving");setTimeout(()=>intro.remove(),600)};
-  $(".rr-intro-skip",intro).addEventListener("click",finish);
-  const timer=setTimeout(finish,2200);intro.addEventListener("click",e=>{if(e.target===intro){clearTimeout(timer);finish()}});
+  const finish=()=>{
+   if(finished)return;finished=true;window.clearTimeout(timer);document.removeEventListener("keydown",onKeydown);
+   safeWrite(STORAGE.intro,"1");document.body.style.overflow=priorOverflow;
+   intro.classList.add("is-leaving");
+   window.setTimeout(()=>{intro.remove();if(title){title.setAttribute("tabindex","-1");title.focus({preventScroll:true})}},320);
+  };
+  const onKeydown=event=>{if(event.key==="Escape"){event.preventDefault();finish()}};
+  button.addEventListener("click",finish);
+  intro.addEventListener("click",event=>{if(event.target===intro)finish()});
+  document.addEventListener("keydown",onKeydown);
+  button.focus({preventScroll:true});
+  const timer=window.setTimeout(finish,1800);
  }
+
  function setupTransitions(){
   if(reduced)return;
   const overlay=document.createElement("div");overlay.className="rr-transition";overlay.setAttribute("aria-hidden","true");document.body.append(overlay);
-  document.addEventListener("click",e=>{
-   const a=e.target.closest("a[href]");if(!a||e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
-   if(a.target&&a.target!=="_self"||a.hasAttribute("download")||a.hasAttribute("data-no-transition"))return;
-   const url=new URL(a.href,location.href);if(url.origin!==location.origin||url.pathname===location.pathname&&url.search===location.search&&url.hash)return;
+  document.addEventListener("click",event=>{
+   if(!(event.target instanceof Element))return;
+   const anchor=event.target.closest("a[href]");
+   if(!anchor||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+   if(anchor.target&&anchor.target!=="_self"||anchor.hasAttribute("download")||anchor.hasAttribute("data-no-transition"))return;
+   const url=new URL(anchor.href,location.href);
+   if(url.origin!==location.origin)return;
    if(url.pathname===location.pathname&&url.search===location.search)return;
-   e.preventDefault();overlay.classList.add("is-active");window.setTimeout(()=>{location.href=url.href},240);
+   event.preventDefault();overlay.classList.add("is-active");
+   window.setTimeout(()=>{location.href=url.href},300);
   });
  }
  function setupReveal(){
@@ -163,34 +226,43 @@
   });
  }
 
+
  function setupArchiveSearch(){
-  const path=location.pathname.split("/").pop();
-  if(path!=="archive.html")return;
+  if(location.pathname.split("/").pop()!=="archive.html")return;
   const main=$("#main")||$("main");if(!main||$("#rr-archive-search"))return;
   const cards=$$(".grid .card",main);if(!cards.length)return;
+  const archiveKinds=new Map([
+   ["文藝年鑑・統計","年鑑・統計"],["作家・作品資料","人物・書誌"],["文藝雑誌・新聞","定期刊行物"],
+   ["調査・研究報告","調査・研究"],["告示・制度史","行政・制度史"],["特別資料","特別資料"],
+   ["B-01","刊行文藝"],["B-02","創作過程資料"],["B-03","作家関係資料"],
+   ["B-04","批評・研究資料"],["B-05","口承・上演記録"],["B-06","行政・事業記録"]
+  ]);
+  const categoryFor=card=>{
+   const label=$(".lr-card-label",card),title=$("h3",card);
+   const key=(label&&label.textContent.trim())||(title&&title.textContent.trim())||"";
+   if(archiveKinds.has(key))return archiveKinds.get(key);
+   const name=title&&title.textContent.trim();
+   return (name&&archiveKinds.get(name))||"その他";
+  };
+  const categories=[...new Set(cards.map(categoryFor))].sort((a,b)=>a.localeCompare(b,"ja"));
   const controls=document.createElement("section");controls.id="rr-archive-search";controls.className="rr-toc";
-  const options=[...new Set(cards.map(card=>{
-    const section=card.closest(".section"),heading=section&&$("h2",section);
-    return heading?heading.textContent.trim():"資料";
-  }))];
-  controls.innerHTML='<label for="rr-archive-query" style="display:block;font-weight:600;margin-bottom:.5rem">資料室を検索</label><div class="rr-archive-controls"><input id="rr-archive-query" type="search" placeholder="資料名・説明文で検索" autocomplete="off"><select id="rr-archive-category" aria-label="資料分類で絞り込む"><option value="">すべての分類</option>'+options.map(value=>'<option value="'+esc(value)+'">'+esc(value)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" aria-live="polite"></p>';
+  controls.setAttribute("aria-label","資料室の検索と絞り込み");
+  controls.innerHTML='<label for="rr-archive-query" style="display:block;font-weight:600;margin-bottom:.5rem">資料室を検索</label><div class="rr-archive-controls"><input id="rr-archive-query" type="search" placeholder="資料名・説明文・分類コードで検索" autocomplete="off"><select id="rr-archive-category" aria-label="資料分類で絞り込む"><option value="">すべての分類</option>'+categories.map(value=>'<option value="'+esc(value)+'">'+esc(value)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" aria-live="polite"></p>';
   const first=$(".section",main);if(first)main.insertBefore(controls,first);else main.prepend(controls);
   const query=$("#rr-archive-query",controls),select=$("#rr-archive-category",controls),count=$("#rr-archive-count",controls);
   function update(){
-    const q=query.value.trim().toLocaleLowerCase("ja"),category=select.value;let visible=0;
-    cards.forEach(card=>{
-      const section=card.closest(".section"),heading=section&&$("h2",section),cat=heading?heading.textContent.trim():"資料";
-      const okText=!q||card.textContent.toLocaleLowerCase("ja").includes(q);
-      const okCategory=!category||cat===category;
-      card.hidden=!(okText&&okCategory);if(!card.hidden)visible++;
-    });
-    count.textContent="表示中："+visible+" / "+cards.length+" 件";
+   const q=query.value.normalize("NFKC").trim().toLocaleLowerCase("ja-JP"),category=select.value;let visible=0;
+   cards.forEach(card=>{
+    const hay=card.textContent.normalize("NFKC").toLocaleLowerCase("ja-JP");
+    const matchesText=!q||hay.includes(q),matchesCategory=!category||categoryFor(card)===category;
+    card.hidden=!(matchesText&&matchesCategory);if(!card.hidden)visible++;
+   });
+   count.textContent=visible===0?"該當する資料はありません。":"表示中："+visible+" / "+cards.length+" 件";
   }
   query.addEventListener("input",update);select.addEventListener("change",update);
   $("#rr-archive-reset",controls).addEventListener("click",()=>{query.value="";select.value="";update();query.focus()});
   update();
  }
-
  function setupSealActions(){
   document.addEventListener("click",e=>{
    const button=e.target.closest("button");if(!button||button.closest("#rr-toolbar")||button.closest("#rr-bookmarks-dialog"))return;
