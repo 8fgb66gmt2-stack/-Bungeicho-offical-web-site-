@@ -32,6 +32,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nav.replaceChildren(fragment);
+
+    // Responsive primary navigation: keep the same links and expose them through a real button on small screens.
+    nav.id = nav.id || "site-primary-nav";
+    const navParent = nav.closest(".new-nav") || nav.closest(".nav-wrap");
+    if (navParent && !navParent.querySelector(".site-nav-toggle")) {
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "site-nav-toggle";
+      toggle.setAttribute("aria-controls", nav.id);
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.textContent = "選單 ＋";
+      toggle.addEventListener("click", () => {
+        const open = toggle.getAttribute("aria-expanded") !== "true";
+        toggle.setAttribute("aria-expanded", String(open));
+        nav.classList.toggle("is-open", open);
+        toggle.textContent = open ? "閉じる −" : "選單 ＋";
+      });
+      navParent.insertBefore(toggle, nav);
+      nav.addEventListener("click", event => {
+        if (!event.target.closest("a")) return;
+        toggle.setAttribute("aria-expanded", "false");
+        nav.classList.remove("is-open");
+        toggle.textContent = "選單 ＋";
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key !== "Escape" || toggle.getAttribute("aria-expanded") !== "true") return;
+        toggle.setAttribute("aria-expanded", "false");
+        nav.classList.remove("is-open");
+        toggle.textContent = "選單 ＋";
+        toggle.focus();
+      });
+    }
   }
 
   const overlay = document.querySelector("#index-overlay");
