@@ -872,3 +872,20 @@ body:not(.revolution-home) .lr-list li::marker{color:var(--rr-gold)!important}
   .new-footer *,body:not(.revolution-home) .footer *{color:#222!important}
   .rr-reveal{opacity:1!important;transform:none!important}
 }
+
+
+/* Final detail pass: archive controls, adaptive spacing and valid logical borders */
+.rr-clock{border-block-start:0!important;border-block-end:1px solid rgba(185,152,91,.42)!important}
+#rr-archive-search .rr-archive-controls{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.42fr) auto;
+  align-items:center;gap:.6rem;margin-top:.65rem;
+}
+#rr-archive-search .rr-archive-controls input,
+#rr-archive-search .rr-archive-controls select,
+#rr-archive-search .rr-archive-controls button{min-width:0}
+#rr-archive-count{margin:.7rem 0 0;color:var(--rr-muted);font-size:.78rem;letter-spacing:.04em}
+.rr-index{margin:.6rem 0 1rem!important}
+@media(max-width:640px){
+  #rr-archive-search .rr-archive-controls{grid-template-columns:minmax(0,1fr)!important}
+  #rr-archive-search .rr-archive-controls button{width:100%}
+}
