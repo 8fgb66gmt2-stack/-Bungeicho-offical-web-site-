@@ -109,11 +109,11 @@
   const imperial=source.match(/帝國暦\s*[0-9０-９一二三四五六七八九十百千]+\s*年/);
   const clock=document.createElement("aside");clock.id="rr-clock";clock.className="rr-clock";
   clock.setAttribute("aria-label","時報と帝國暦");
-  clock.innerHTML='<span class="rr-clock-seal" aria-hidden="true">文</span><strong>文藝廳時報</strong><span class="rr-clock-era">'+esc(era?era[0]:"玲瓏時代")+'</span><span aria-hidden="true">／</span><span class="rr-clock-imperial">'+esc(imperial?imperial[0]:"帝國暦")+'</span><span class="rr-clock-time"></span>';
+  clock.innerHTML='<span class="rr-clock-seal" aria-hidden="true">文</span><strong>文藝廳時報</strong><span class="rr-clock-era">'+esc(era?era[0]:"玲瓏時代")+'</span><span aria-hidden="true">／</span><span class="rr-clock-imperial">'+esc(imperial?imperial[0]:"帝國暦")+'</span><time class="rr-clock-time"></time>';
   if(line)line.insertAdjacentElement("afterend",clock);else document.body.insertAdjacentElement("afterbegin",clock);
   const update=()=>{
    const now=new Date(),time=now.toLocaleTimeString("ja-JP",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
-   const el=$(".rr-clock-time",clock);if(el)el.textContent="現在時刻 "+time;
+   const el=$(".rr-clock-time",clock);if(el){el.textContent="現在時刻 "+time;el.dateTime=now.toISOString();}
   };
   update();window.setInterval(update,1000);
  }
