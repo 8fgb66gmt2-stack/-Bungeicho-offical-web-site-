@@ -503,7 +503,7 @@
   badge.innerHTML='<span class="rr-page-craft-seal" aria-hidden="true">文</span><span><strong>本頁ノ讀書目安</strong><small>'+minutes+' 分ほど</small></span>';
   const anchor=$(".hero")||$("main")||$(".main-content");
   if(anchor)anchor.insertAdjacentElement("afterbegin",badge);
-  const headings=$("main h2,main h3,article h2,article h3,.main-content h2,.main-content h3");
+  const headings=$$("main h2,main h3,article h2,article h3,.main-content h2,.main-content h3");
   headings.forEach((heading,index)=>{
    if(!heading.id){const base=(heading.textContent||"section").toLowerCase().normalize("NFKD").replace(/[^a-z0-9ぁ-んァ-ヶ一-龠]+/g,"-").replace(/^-|-$/g,"").slice(0,48)||"section";heading.id=base+"-"+(index+1)}
    if(heading.querySelector(".rr-heading-link"))return;
