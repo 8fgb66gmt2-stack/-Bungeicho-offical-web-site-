@@ -154,12 +154,15 @@
    intro.classList.add("is-leaving");
    window.setTimeout(()=>{intro.remove();if(title){title.setAttribute("tabindex","-1");title.focus({preventScroll:true})}},320);
   };
-  const onKeydown=event=>{if(event.key==="Escape"){event.preventDefault();finish()}};
+  const onKeydown=event=>{
+   if(event.key==="Escape"){event.preventDefault();finish();return}
+   if(event.key==="Tab"){event.preventDefault();button.focus({preventScroll:true})}
+  };
   button.addEventListener("click",finish);
   intro.addEventListener("click",event=>{if(event.target===intro)finish()});
   document.addEventListener("keydown",onKeydown);
   button.focus({preventScroll:true});
-  const timer=window.setTimeout(finish,1800);
+  timer=window.setTimeout(finish,1800);
  }
 
  function setupTransitions(){
