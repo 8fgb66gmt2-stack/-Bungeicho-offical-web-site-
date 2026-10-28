@@ -90,6 +90,9 @@ for path in html_paths:
     for required in ("description", "theme-color"):
         if not parser.meta.get(("name", required)):
             fail(f"{path.name}: missing meta name={required!r}.")
+    # The custom 404 is intentionally noindex and is not a canonical/sitemap page.
+    if path.name == "404.html":
+        continue
     for required in ("og:title", "og:description", "og:url"):
         if not parser.meta.get(("property", required)):
             fail(f"{path.name}: missing Open Graph {required!r}.")
@@ -166,7 +169,7 @@ try:
     locations = [node.text or "" for node in tree.findall(".//sm:loc", namespace)]
     expected_locations = sorted(
         BASE_URL + "/" if page.name == "index.html" else BASE_URL + "/" + page.name
-        for page in html_paths
+        for page in html_paths if page.name != "404.html"
     )
     if sorted(locations) != expected_locations:
         fail("sitemap.xml: location list does not match the HTML pages.")
