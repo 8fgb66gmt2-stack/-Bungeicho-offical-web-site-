@@ -497,7 +497,7 @@
  function injectPageCraft(){
   if($("#rr-page-craft"))return;
   const main=$("main")||$("article")||$(".main-content")||document.body;
-  const text=(main.innerText||"").replace(/\\s+/g," ").trim();
+  const text=(main.innerText||"").replace(/\s+/g," ").trim();
   const minutes=Math.max(1,Math.ceil(text.length/500));
   const badge=document.createElement("aside");badge.id="rr-page-craft";badge.className="rr-page-craft";
   badge.innerHTML='<span class="rr-page-craft-seal" aria-hidden="true">文</span><span><strong>本頁ノ讀書目安</strong><small>'+minutes+' 分ほど</small></span>';
