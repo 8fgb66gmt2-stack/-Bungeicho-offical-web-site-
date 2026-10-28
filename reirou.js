@@ -528,7 +528,8 @@
    help.addEventListener("click",e=>{if(e.target===help||e.target.closest(".rr-shortcut-close"))help.hidden=true});
   }
  }
-\n function installQuickShortcuts(){
+
+ function installQuickShortcuts(){
   document.addEventListener("keydown",event=>{
    const target=event.target;
    const typing=target instanceof Element&&(target.matches("input,textarea,select,[contenteditable='true']")||target.closest("[role='dialog']"));
