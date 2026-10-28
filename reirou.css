@@ -1224,3 +1224,12 @@ body.rr-reading-sheet .sidebar{opacity:.72}
  .rr-journey-progress span,.rr-journey-link,.rr-journey-search{transition:none}
  .rr-transition{transform:none;transition:opacity .01ms}
 }
+
+
+/* Portable archive + richer search previews */
+.rr-dialog-actions [data-rr-export],.rr-dialog-actions [data-rr-import]{border:1px solid rgba(173,138,76,.55);background:linear-gradient(135deg,#fffaf0,#efe3cf);color:#762d3a;padding:9px 13px;font:600 11px/1.5 var(--rr-serif);cursor:pointer;transition:background .18s,transform .18s}
+.rr-dialog-actions [data-rr-export]:hover,.rr-dialog-actions [data-rr-import]:hover{background:#e8d6b5;transform:translateY(-1px)}
+.rr-command-result-snippet{display:block;margin-top:5px;padding-top:5px;border-top:1px solid rgba(173,138,76,.18);color:#766b63;font:11px/1.65 var(--rr-serif);white-space:normal;overflow-wrap:anywhere}
+.rr-command-result{min-width:0}
+.rr-command-result-title,.rr-command-result-subtitle{overflow-wrap:anywhere}
+@media(max-width:560px){.rr-dialog-actions [data-rr-export],.rr-dialog-actions [data-rr-import]{flex:1;min-width:0}.rr-command-result-snippet{font-size:10px;line-height:1.55}}
