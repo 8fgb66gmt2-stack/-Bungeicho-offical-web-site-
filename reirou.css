@@ -909,7 +909,7 @@ body:not(.revolution-home) .footer h2,body:not(.revolution-home) .footer h3{
   .new-nav{flex-wrap:wrap;align-items:center;padding-block:.55rem!important;gap:.55rem!important}
   .new-nav .nav-caption{flex:1 1 auto}
   .new-nav .site-nav-toggle{display:inline-flex;margin-left:auto}
-  .new-nav .nav,.new-nav .nav:not(.is-open){display:none!important}
+  .new-nav.nav-ready .nav,.new-nav.nav-ready .nav:not(.is-open){display:none!important}
   .new-nav .nav.is-open{
     display:flex!important;flex:1 0 100%;flex-direction:column;align-items:stretch;justify-content:flex-start;
     width:100%;max-height:min(65vh,520px);overflow-y:auto;overscroll-behavior:contain;
@@ -919,7 +919,7 @@ body:not(.revolution-home) .footer h2,body:not(.revolution-home) .footer h3{
   .new-nav .nav-end{display:none}
   body:not(.revolution-home) .nav-wrap{display:flex;flex-direction:column;align-items:stretch;padding:.45rem .8rem!important}
   body:not(.revolution-home) .nav-wrap .site-nav-toggle{display:inline-flex;align-self:flex-end;margin:.1rem 0 .35rem}
-  body:not(.revolution-home) .nav-wrap .nav,body:not(.revolution-home) .nav-wrap .nav:not(.is-open){display:none!important}
+  body:not(.revolution-home) .nav-wrap.nav-ready .nav,body:not(.revolution-home) .nav-wrap.nav-ready .nav:not(.is-open){display:none!important}
   body:not(.revolution-home) .nav-wrap .nav.is-open{
     display:flex!important;flex-direction:column;align-items:stretch;justify-content:flex-start;
     width:100%;max-height:min(65vh,520px);overflow-y:auto;overscroll-behavior:contain;
@@ -930,4 +930,21 @@ body:not(.revolution-home) .footer h2,body:not(.revolution-home) .footer h3{
 @media(min-width:761px){
   .site-nav-toggle{display:none!important}
   .new-nav .nav,.nav-wrap .nav{display:flex!important}
+}
+
+
+/* Identity system: match the reference bureau's seal-red masthead and keep the page itself light */
+.worldline,body:not(.revolution-home) .topline{
+  background:linear-gradient(90deg,#4b1424 0%,#6d182b 52%,#3b1726 100%)!important;
+  color:#f0e2c8!important;border-bottom:1px solid #b9985b!important;
+}
+.new-nav{background:linear-gradient(90deg,#4b1424 0%,#64192d 56%,#3b1726 100%)!important}
+body:not(.revolution-home) .nav-wrap{
+  background:linear-gradient(90deg,#4b1424 0%,#64192d 56%,#3b1726 100%)!important;
+  border-bottom:1px solid #b9985b!important;
+}
+body:not(.revolution-home) .nav-wrap .nav a{color:#f2e5cf!important}
+body:not(.revolution-home) .nav-wrap .nav a:hover,
+body:not(.revolution-home) .nav-wrap .nav a[aria-current="page"]{
+  color:#fff8ea!important;background:rgba(255,255,255,.055)!important;border-bottom-color:#d7c39a!important;
 }
