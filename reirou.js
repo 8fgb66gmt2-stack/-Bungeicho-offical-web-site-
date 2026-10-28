@@ -196,7 +196,7 @@
   const toc=document.createElement("details");toc.id="rr-toc";toc.className="rr-toc";toc.open=true;
   const summary=document.createElement("summary");summary.textContent="本頁の目次";toc.append(summary);
   const list=document.createElement("ol");
-  headings.forEach(h=>{const li=document.createElement("li");if(h.tagName==="H3")li.style.marginLeft="1rem";const a=document.createElement("a");a.href="#"+h.id;a.textContent=h.textContent.trim();li.append(a);list.append(li)});
+  headings.forEach(h=>{const li=document.createElement("li");if(h.tagName==="H3")li.classList.add("rr-toc-subitem");const a=document.createElement("a");a.href="#"+h.id;a.textContent=h.textContent.trim();li.append(a);list.append(li)});
   toc.append(list);
   const firstSection=$("main > .section, main > section",main);if(firstSection)main.insertBefore(toc,firstSection);else main.insertBefore(toc,main.firstChild);
  }
@@ -250,7 +250,7 @@
   const categories=[...new Set(cards.map(categoryFor))].sort((a,b)=>a.localeCompare(b,"ja"));
   const controls=document.createElement("section");controls.id="rr-archive-search";controls.className="rr-toc";
   controls.setAttribute("aria-label","資料室の検索と絞り込み");
-  controls.innerHTML='<label for="rr-archive-query" style="display:block;font-weight:600;margin-bottom:.5rem">資料室を検索</label><div class="rr-archive-controls"><input id="rr-archive-query" type="search" placeholder="資料名・説明文・分類コードで検索" autocomplete="off"><select id="rr-archive-category" aria-label="資料分類で絞り込む"><option value="">すべての分類</option>'+categories.map(value=>'<option value="'+esc(value)+'">'+esc(value)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" aria-live="polite"></p>';
+  controls.innerHTML='<label class="rr-archive-label" for="rr-archive-query">資料室を検索</label><div class="rr-archive-controls"><input id="rr-archive-query" type="search" placeholder="資料名・説明文・分類コードで検索" autocomplete="off"><select id="rr-archive-category" aria-label="資料分類で絞り込む"><option value="">すべての分類</option>'+categories.map(value=>'<option value="'+esc(value)+'">'+esc(value)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" class="rr-archive-count" aria-live="polite"></p>';
   const first=$(".section",main);if(first)main.insertBefore(controls,first);else main.prepend(controls);
   const query=$("#rr-archive-query",controls),select=$("#rr-archive-category",controls),count=$("#rr-archive-count",controls);
   function update(){
