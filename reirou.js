@@ -163,7 +163,6 @@
   if(path!=="archive.html")return;
   const main=$("#main")||$("main");if(!main||$("#rr-archive-search"))return;
   const cards=$(".grid .card",main);if(!cards.length)return;
-  const sections=$(".section",main);
   const controls=document.createElement("section");controls.id="rr-archive-search";controls.className="rr-toc";
   const options=[...new Set(cards.map(card=>{const section=card.closest(".section");const h=section&&$("h2",section);return h?h.textContent.trim():"資料"}))];
   controls.innerHTML='<label for="rr-archive-query" style="display:block;color:var(--rr-wine);font-weight:600;margin-bottom:.5rem">資料室を検索</label><div style="display:flex;gap:.5rem;flex-wrap:wrap"><input id="rr-archive-query" type="search" placeholder="資料名・説明文で検索" style="flex:1;min-width:180px;padding:.65rem;border:1px solid var(--rr-gold);background:#fffaf0;color:var(--rr-ink)"><select id="rr-archive-category" aria-label="資料分類で絞り込む" style="padding:.65rem;border:1px solid var(--rr-gold);background:#fffaf0;color:var(--rr-ink)"><option value="">すべての分類</option>'+options.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" aria-live="polite" style="margin:.6rem 0 0;color:var(--rr-muted);font-size:.8rem"></p>';
