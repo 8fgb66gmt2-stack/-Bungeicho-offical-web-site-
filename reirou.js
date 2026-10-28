@@ -1,7 +1,7 @@
 /* 玲瓏浪漫 UI enhancement layer — progressive enhancement, no content rewriting */
 (()=> {
  "use strict";
- const STORAGE={intro:"bungeicho.rr.intro.seen.v1",bookmarks:"bungeicho.rr.bookmarks.v1",font:"bungeicho.rr.font.v1",reading:"bungeicho.rr.reading.v1"};
+ const STORAGE={intro:"bungeicho.rr.intro.seen.v1",bookmarks:"bungeicho.rr.bookmarks.v1",font:"bungeicho.rr.font.v1",reading:"bungeicho.rr.reading.v1",visited:"bungeicho.rr.visited.v1"};
  const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
  const safeRead=(key,fallback)=>{try{const v=localStorage.getItem(key);return v===null?fallback:v}catch{return fallback}};
  const safeWrite=(key,value)=>{try{localStorage.setItem(key,value);return true}catch{return false}};
@@ -332,7 +332,38 @@
   const local=currentPageItems();
   const source=q.length>=2?base.concat(local,quickSearchItems):base.concat(local.slice(0,5));
   if(q.length<2)return source.slice(0,14);
-  return source.filter(item=>item.haystack.includes(q)||normSearch(item.title+" "+item.subtitle).includes(q)).slice(0,16);
+  const terms=q.split(/[\s　、,，・/]+/).map(normSearch).filter(Boolean);
+  const aliases={
+   "人名":["人物録","人物","作家"],"人物":["人物録","文學・藝術人物録","作家"],
+   "人物録":["人物","文學・藝術人物録"],"作家":["人物録","作家支援","文藝振興"],
+   "資料":["文藝資料室","資料室","記録"],"史料":["資料室","記録","年鑑"],
+   "制度":["文藝賞","表彰","組織"],"賞":["文藝賞","表彰制度"],
+   "告知":["告示","公表資料"],"職員":["組織・人事","人事"],
+   "案内":["サイトマップ","全文索引"],"支援":["文藝振興・作家支援","創作"]
+  };
+  const expanded=[q,...(aliases[q]||[]).map(normSearch)];
+  const ranked=[];
+  for(const item of source){
+   const title=normSearch(item.title),subtitle=normSearch(item.subtitle),hay=normSearch((item.haystack||"")+" "+item.href+" "+item.title+" "+item.subtitle);
+   let score=0;
+   for(const candidate of expanded){
+    if(title===candidate)score=Math.max(score,1200);
+    else if(title.startsWith(candidate))score=Math.max(score,750);
+    else if(title.includes(candidate))score=Math.max(score,500);
+    else if(subtitle.includes(candidate))score=Math.max(score,220);
+    else if(hay.includes(candidate))score=Math.max(score,100);
+   }
+   if(terms.length>1&&terms.every(term=>hay.includes(term)))score=Math.max(score,160+terms.length);
+   if(!score&&q.length>=3){
+    let cursor=0;
+    for(const ch of q){const at=hay.indexOf(ch,cursor);if(at<0){cursor=-1;break}cursor=at+1}
+    if(cursor>0)score=18;
+   }
+   if(score)ranked.push({item,score});
+  }
+  ranked.sort((a,b)=>b.score-a.score||a.item.title.localeCompare(b.item.title,"ja"));
+  const unique=new Set();
+  return ranked.filter(({item})=>{const key=item.href+"|"+item.title;if(unique.has(key))return false;unique.add(key);return true}).slice(0,16).map(({item})=>item);
  }
  function renderQuickSearch(){
   if(!quickSearchResults||!quickSearchInput)return;
@@ -345,9 +376,10 @@
   }
   results.forEach((item,index)=>{
    const button=document.createElement("button");button.type="button";button.className="rr-command-result"+(index===quickSearchCursor?" is-selected":"");button.setAttribute("role","option");button.setAttribute("aria-selected",String(index===quickSearchCursor));button.dataset.rrResult=String(index);
+   const kind=document.createElement("span");kind.className="rr-command-result-kind";kind.textContent=({page:"公開頁",heading:"見出し",content:"本文記録",action:"操作"})[item.type]||"記録";
    const title=document.createElement("span");title.className="rr-command-result-title";title.textContent=item.title;
    const subtitle=document.createElement("span");subtitle.className="rr-command-result-subtitle";subtitle.textContent=item.subtitle||"";
-   button.append(title,subtitle);button.addEventListener("mouseenter",()=>{quickSearchCursor=index;syncQuickSearchSelection()});button.addEventListener("click",()=>runQuickSearchItem(item));quickSearchResults.append(button);
+   button.append(kind,title,subtitle);button.addEventListener("mouseenter",()=>{quickSearchCursor=index;syncQuickSearchSelection()});button.addEventListener("click",()=>runQuickSearchItem(item));quickSearchResults.append(button);
   });
   quickSearchStatus.textContent=query.trim()?results.length+" 件を表示":"索引・操作 "+results.length+" 件 ／ 全文検索は語句を入力";
   quickSearchResults.dataset.count=String(results.length);
@@ -529,6 +561,35 @@
   }
  }
 
+ function injectPageJourney(){
+  if($("#rr-page-journey"))return;
+  const file=decodeURIComponent(location.pathname.split("/").pop()||"index.html");
+  const index=SITE_PAGES.findIndex(([path])=>path===file);
+  if(index<0)return;
+  const main=$("#main")||$("main")||$("article");if(!main)return;
+  const current=SITE_PAGES[index];
+  let recent=[];try{const parsed=JSON.parse(safeRead(STORAGE.visited,"[]"));if(Array.isArray(parsed))recent=parsed.filter(item=>item&&typeof item.path==="string"&&typeof item.title==="string"&&SITE_PAGES.some(([path])=>path===item.path))}catch{recent=[]}
+  recent=[{path:current[0],title:current[1],time:Date.now()},...recent.filter(item=>item.path!==current[0])].slice(0,6);
+  safeWrite(STORAGE.visited,JSON.stringify(recent));
+  const nav=document.createElement("nav");nav.id="rr-page-journey";nav.className="rr-page-journey";nav.setAttribute("aria-label","文藝廳内の閲覽順路");
+  const percent=Math.round((index+1)/SITE_PAGES.length*100);
+  nav.innerHTML='<div class="rr-journey-heading"><span class="rr-journey-kicker">BUNGEICHO / READING ROUTE</span><span class="rr-journey-count">第 '+(index+1)+' 頁 ／ '+SITE_PAGES.length+' 頁</span></div><div class="rr-journey-progress" role="progressbar" aria-label="公開ページの位置" aria-valuemin="0" aria-valuemax="'+SITE_PAGES.length+'" aria-valuenow="'+(index+1)+'"><span style="width:'+percent+'%"></span></div><div class="rr-journey-links"><div class="rr-journey-side rr-journey-prev"></div><button type="button" class="rr-journey-search"><span aria-hidden="true">⌕</span><span>全文索引</span><kbd>⌘ K</kbd></button><div class="rr-journey-side rr-journey-next"></div></div><details class="rr-journey-recent"><summary>最近の閲覽記録 <span>このブラウザのみ</span></summary><ol></ol></details>';
+  const createLink=(idx,label,side)=>{
+   const host=$(".rr-journey-"+side,nav);
+   if(idx<0||idx>=SITE_PAGES.length){const empty=document.createElement("span");empty.className="rr-journey-unavailable";empty.textContent=label;host.append(empty);return}
+   const [path,name]=SITE_PAGES[idx],a=document.createElement("a");a.href=path;a.className="rr-journey-link";a.setAttribute("aria-label",label+": "+name);
+   const small=document.createElement("small");small.textContent=label;
+   const strong=document.createElement("strong");strong.textContent=name;
+   a.append(small,strong);host.append(a);
+  };
+  createLink(index-1,"← 前の頁","prev");createLink(index+1,"次の頁 →","next");
+  $(".rr-journey-search",nav).addEventListener("click",openQuickSearch);
+  const list=$(".rr-journey-recent ol",nav);
+  recent.forEach(item=>{
+   const li=document.createElement("li"),a=document.createElement("a");a.href=item.path;a.textContent=item.title+(item.path===current[0]?" ／ 閲覽中":"");if(item.path===current[0])a.setAttribute("aria-current","page");li.append(a);list.append(li);
+  });
+  main.append(nav);
+ }
  function installQuickShortcuts(){
   document.addEventListener("keydown",event=>{
    const target=event.target;
@@ -547,6 +608,6 @@
  }
  document.addEventListener("DOMContentLoaded",()=>{
   if(reduced)document.documentElement.classList.add("rr-no-motion");
-  injectToolbar();injectClock();injectCalendar();injectReadingProgress();injectResumeReader();injectCitationHelper();injectPageCraft();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
+  injectToolbar();injectClock();injectCalendar();injectReadingProgress();injectResumeReader();injectCitationHelper();injectPageCraft();injectPageJourney();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
  });
 })();
