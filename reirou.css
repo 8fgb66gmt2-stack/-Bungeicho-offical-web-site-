@@ -55,7 +55,7 @@ body::before{
   border-inline:3px double var(--rr-gold);transition:transform .28s cubic-bezier(.7,0,.2,1),opacity .12s;
 }
 .rr-transition.is-active{opacity:1;transform:scaleX(1)}
-.rr-petal-layer{position:fixed;inset:0;z-index:100;pointer-events:none;overflow:hidden}
+.rr-petal-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .rr-petal{position:absolute;top:-8vh;width:9px;height:14px;border-radius:90% 5% 90% 5%;background:linear-gradient(145deg,#b86a72,#762d3a);opacity:0;animation:rr-petal-fall var(--duration,4s) ease-in forwards;transform:rotate(var(--rotation,0deg))}
 @keyframes rr-petal-fall{0%{opacity:0;transform:translate3d(0,-5vh,0) rotate(0)}12%{opacity:.72}100%{opacity:0;transform:translate3d(var(--drift,40px),110vh,0) rotate(560deg)}}
 .rr-intro{
@@ -63,7 +63,7 @@ body::before{
   transition:opacity .28s ease,visibility .28s ease;overflow:hidden
 }
 .rr-intro[hidden]{display:none}.rr-intro.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
-.rr-intro-inner{position:relative;text-align:center;padding:3rem 2rem;max-width:90vw}
+.rr-intro-inner{position:relative;z-index:1;text-align:center;padding:3rem 2rem;max-width:90vw}
 .rr-intro-kicker{font-size:.68rem;letter-spacing:.22em;color:var(--rr-muted)}
 .rr-intro-title{margin:.6rem 0;color:var(--rr-wine);font-size:clamp(3rem,11vw,7rem);font-weight:500;letter-spacing:.25em}
 .rr-intro-rule{width:0;height:1px;background:var(--rr-gold);margin:1rem auto;animation:rr-rule-open 1s .2s forwards}
