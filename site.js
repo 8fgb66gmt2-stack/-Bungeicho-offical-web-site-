@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toggle.textContent = open ? "閉じる −" : "選單 ＋";
       });
       navParent.insertBefore(toggle, nav);
+      navParent.classList.add("nav-ready");
       nav.addEventListener("click", event => {
         if (!event.target.closest("a")) return;
         toggle.setAttribute("aria-expanded", "false");
