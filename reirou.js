@@ -147,7 +147,7 @@
   const priorOverflow=document.body.style.overflow;
   document.body.append(intro);document.body.style.overflow="hidden";addPetals(intro,18);
   const button=$(".rr-intro-skip",intro),title=$("#opening-title");
-  let finished=false;
+  let finished=false,timer=0;
   const finish=()=>{
    if(finished)return;finished=true;window.clearTimeout(timer);document.removeEventListener("keydown",onKeydown);
    safeWrite(STORAGE.intro,"1");document.body.style.overflow=priorOverflow;
