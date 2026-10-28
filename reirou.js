@@ -138,45 +138,59 @@
   if(!document.body.classList.contains("jinbutsu-page"))return;
   const cards=$$(".jr-person");if(!cards.length)return;
   const search=$("#person-search");if(!search)return;
-  const area=document.createElement("nav");area.className="rr-index";area.setAttribute("aria-label","人物名の五十音索引");
-  const groups=[["あ","あいうえお"],["か","かきくけこがぎぐげご"],["さ","さしすせそざじずぜぞ"],["た","たちつてとだぢづでど"],["な","なにぬねの"],["は","はひふへほばびぶべぼぱぴぷぺぽ"],["ま","まみむめも"],["や","やゆよ"],["ら","らりるれろ"],["わ","わをん"],["英","ABCDEFGHIJKLMNOPQRSTUVWXYZ"]];
-  const all=document.createElement("button");all.type="button";all.textContent="全";all.className="is-active";all.dataset.rrInitial="all";area.append(all);
-  groups.forEach(([label])=>{const b=document.createElement("button");b.type="button";b.textContent=label;b.dataset.rrInitial=label;area.append(b)});
-  search.insertAdjacentElement("beforebegin",area);
-  function firstChar(card){const heading=$("h2,h3,.jr-person-name",card);const text=(heading?heading.textContent:card.textContent).trim().replace(/^[「『【（\s]+/,"");return text.charAt(0).toLocaleLowerCase("ja")}
-  area.addEventListener("click",e=>{
-   const b=e.target.closest("button[data-rr-initial]");if(!b)return;
-   $$("button",area).forEach(x=>x.classList.toggle("is-active",x===b));
-   const label=b.dataset.rrInitial;const kana=groups.find(g=>g[0]===label)?.[1]||"";
-   if(label==="all"){search.value="";search.dispatchEvent(new Event("input",{bubbles:true}));return}
-   const matching=cards.filter(card=>{const c=firstChar(card);return label==="英"?/^[a-z0-9]/i.test(c):kana.includes(c)});
-   cards.forEach(card=>card.hidden=!matching.includes(card));
-   const count=$("#visible-count");if(count)count.textContent=String(matching.length);
-   const summary=$("#result-summary");if(summary)summary.textContent=label+"行：全"+matching.length+"名を表示中";
-   const empty=$("#no-results");if(empty)empty.hidden=matching.length!==0;
-   search.value="";
+  const wrap=search.closest(".jr-search")||search;
+  const heading=document.createElement("p");heading.className="rr-index-heading";heading.textContent="REGISTER INDEX / 見出し字索引";
+  const area=document.createElement("nav");area.className="rr-index";area.setAttribute("aria-label","人物名の頭文字索引");
+  const all=document.createElement("button");all.type="button";all.textContent="全";all.className="is-active";all.dataset.rrInitial="all";all.setAttribute("aria-pressed","true");area.append(all);
+  function firstChar(card){
+    const title=$("h2,h3,.jr-person-name",card);
+    const reading=(card.dataset.kana||card.dataset.reading||"").trim();
+    const text=(reading||(title&&title.textContent)||"").trim().replace(/^[「『【（\s]+/,"");
+    return text.charAt(0).toLocaleUpperCase("ja-JP");
+  }
+  const initials=[...new Set(cards.map(firstChar).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ja"));
+  initials.forEach(initial=>{
+    const button=document.createElement("button");button.type="button";button.textContent=initial;
+    button.dataset.rrInitial=initial;button.setAttribute("aria-pressed","false");area.append(button);
   });
-  search.addEventListener("input",()=>{const active=$(".rr-index .is-active",area);if(active&&active.dataset.rrInitial!=="all"){active.classList.remove("is-active");all.classList.add("is-active")}});
+  wrap.insertAdjacentElement("afterend",heading);heading.insertAdjacentElement("afterend",area);
+  area.addEventListener("click",event=>{
+    const button=event.target.closest("button[data-rr-initial]");if(!button)return;
+    $$("button[data-rr-initial]",area).forEach(item=>{
+      const active=item===button;item.classList.toggle("is-active",active);item.setAttribute("aria-pressed",String(active));
+    });
+    document.dispatchEvent(new CustomEvent("bungeicho:person-index-change",{detail:{initial:button.dataset.rrInitial||"all"}}));
+  });
  }
+
  function setupArchiveSearch(){
   const path=location.pathname.split("/").pop();
   if(path!=="archive.html")return;
   const main=$("#main")||$("main");if(!main||$("#rr-archive-search"))return;
-  const cards=$(".grid .card",main);if(!cards.length)return;
+  const cards=$$(".grid .card",main);if(!cards.length)return;
   const controls=document.createElement("section");controls.id="rr-archive-search";controls.className="rr-toc";
-  const options=[...new Set(cards.map(card=>{const section=card.closest(".section");const h=section&&$("h2",section);return h?h.textContent.trim():"資料"}))];
-  controls.innerHTML='<label for="rr-archive-query" style="display:block;color:var(--rr-wine);font-weight:600;margin-bottom:.5rem">資料室を検索</label><div style="display:flex;gap:.5rem;flex-wrap:wrap"><input id="rr-archive-query" type="search" placeholder="資料名・説明文で検索" style="flex:1;min-width:180px;padding:.65rem;border:1px solid var(--rr-gold);background:#fffaf0;color:var(--rr-ink)"><select id="rr-archive-category" aria-label="資料分類で絞り込む" style="padding:.65rem;border:1px solid var(--rr-gold);background:#fffaf0;color:var(--rr-ink)"><option value="">すべての分類</option>'+options.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" aria-live="polite" style="margin:.6rem 0 0;color:var(--rr-muted);font-size:.8rem"></p>';
+  const options=[...new Set(cards.map(card=>{
+    const section=card.closest(".section"),heading=section&&$("h2",section);
+    return heading?heading.textContent.trim():"資料";
+  }))];
+  controls.innerHTML='<label for="rr-archive-query" style="display:block;font-weight:600;margin-bottom:.5rem">資料室を検索</label><div class="rr-archive-controls"><input id="rr-archive-query" type="search" placeholder="資料名・説明文で検索" autocomplete="off"><select id="rr-archive-category" aria-label="資料分類で絞り込む"><option value="">すべての分類</option>'+options.map(value=>'<option value="'+esc(value)+'">'+esc(value)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" aria-live="polite"></p>';
   const first=$(".section",main);if(first)main.insertBefore(controls,first);else main.prepend(controls);
   const query=$("#rr-archive-query",controls),select=$("#rr-archive-category",controls),count=$("#rr-archive-count",controls);
   function update(){
-   const q=query.value.trim().toLocaleLowerCase("ja"),category=select.value;let visible=0;
-   cards.forEach(card=>{const section=card.closest(".section"),h=section&&$("h2",section),cat=h?h.textContent.trim():"資料";const okText=!q||card.textContent.toLocaleLowerCase("ja").includes(q);const okCat=!category||cat===category;card.hidden=!(okText&&okCat);if(!card.hidden)visible++});
-   count.textContent="表示中："+visible+" / "+cards.length+" 件";
+    const q=query.value.trim().toLocaleLowerCase("ja"),category=select.value;let visible=0;
+    cards.forEach(card=>{
+      const section=card.closest(".section"),heading=section&&$("h2",section),cat=heading?heading.textContent.trim():"資料";
+      const okText=!q||card.textContent.toLocaleLowerCase("ja").includes(q);
+      const okCategory=!category||cat===category;
+      card.hidden=!(okText&&okCategory);if(!card.hidden)visible++;
+    });
+    count.textContent="表示中："+visible+" / "+cards.length+" 件";
   }
   query.addEventListener("input",update);select.addEventListener("change",update);
   $("#rr-archive-reset",controls).addEventListener("click",()=>{query.value="";select.value="";update();query.focus()});
   update();
  }
+
  function setupSealActions(){
   document.addEventListener("click",e=>{
    const button=e.target.closest("button");if(!button||button.closest("#rr-toolbar")||button.closest("#rr-bookmarks-dialog"))return;
