@@ -94,7 +94,7 @@
   window.setTimeout(()=>layer.remove(),7000);
  }
  function injectIntro(){
-  if(!document.body.classList.contains("revolution-home")||reduced||safeRead(STORAGE.intro,"")||sessionStorage.getItem("rr-intro-session"))return;
+  if(!document.body.classList.contains("revolution-home")||reduced||safeRead(STORAGE.intro,""))return;
   const intro=document.createElement("div");intro.id="rr-intro";intro.className="rr-intro";intro.setAttribute("role","dialog");intro.setAttribute("aria-label","文藝廳");
   intro.innerHTML='<div class="rr-intro-inner"><p class="rr-intro-kicker">THE IMPERIAL BUREAU OF LITERATURE</p><h1 class="rr-intro-title">文藝廳</h1><div class="rr-intro-rule"></div><p class="rr-intro-sub">文ヲ興シ、思想ヲ遺ス。</p><button class="rr-intro-skip" type="button">閲覧を開始する</button></div>';
   document.body.append(intro);addPetals(intro,22);
@@ -158,6 +158,26 @@
   });
   search.addEventListener("input",()=>{const active=$(".rr-index .is-active",area);if(active&&active.dataset.rrInitial!=="all"){active.classList.remove("is-active");all.classList.add("is-active")}});
  }
+ function setupArchiveSearch(){
+  const path=location.pathname.split("/").pop();
+  if(path!=="archive.html")return;
+  const main=$("#main")||$("main");if(!main||$("#rr-archive-search"))return;
+  const cards=$(".grid .card",main);if(!cards.length)return;
+  const sections=$(".section",main);
+  const controls=document.createElement("section");controls.id="rr-archive-search";controls.className="rr-toc";
+  const options=[...new Set(cards.map(card=>{const section=card.closest(".section");const h=section&&$("h2",section);return h?h.textContent.trim():"資料"}))];
+  controls.innerHTML='<label for="rr-archive-query" style="display:block;color:var(--rr-wine);font-weight:600;margin-bottom:.5rem">資料室を検索</label><div style="display:flex;gap:.5rem;flex-wrap:wrap"><input id="rr-archive-query" type="search" placeholder="資料名・説明文で検索" style="flex:1;min-width:180px;padding:.65rem;border:1px solid var(--rr-gold);background:#fffaf0;color:var(--rr-ink)"><select id="rr-archive-category" aria-label="資料分類で絞り込む" style="padding:.65rem;border:1px solid var(--rr-gold);background:#fffaf0;color:var(--rr-ink)"><option value="">すべての分類</option>'+options.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join("")+'</select><button id="rr-archive-reset" type="button">解除</button></div><p id="rr-archive-count" aria-live="polite" style="margin:.6rem 0 0;color:var(--rr-muted);font-size:.8rem"></p>';
+  const first=$(".section",main);if(first)main.insertBefore(controls,first);else main.prepend(controls);
+  const query=$("#rr-archive-query",controls),select=$("#rr-archive-category",controls),count=$("#rr-archive-count",controls);
+  function update(){
+   const q=query.value.trim().toLocaleLowerCase("ja"),category=select.value;let visible=0;
+   cards.forEach(card=>{const section=card.closest(".section"),h=section&&$("h2",section),cat=h?h.textContent.trim():"資料";const okText=!q||card.textContent.toLocaleLowerCase("ja").includes(q);const okCat=!category||cat===category;card.hidden=!(okText&&okCat);if(!card.hidden)visible++});
+   count.textContent="表示中："+visible+" / "+cards.length+" 件";
+  }
+  query.addEventListener("input",update);select.addEventListener("change",update);
+  $("#rr-archive-reset",controls).addEventListener("click",()=>{query.value="";select.value="";update();query.focus()});
+  update();
+ }
  function setupSealActions(){
   document.addEventListener("click",e=>{
    const button=e.target.closest("button");if(!button||button.closest("#rr-toolbar")||button.closest("#rr-bookmarks-dialog"))return;
@@ -166,6 +186,6 @@
  }
  document.addEventListener("DOMContentLoaded",()=>{
   if(reduced)document.documentElement.classList.add("rr-no-motion");
-  injectToolbar();injectClock();injectCalendar();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupSealActions();
+  injectToolbar();injectClock();injectCalendar();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
  });
 })();
