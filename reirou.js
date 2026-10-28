@@ -532,7 +532,8 @@
   document.addEventListener("keydown",event=>{
    const target=event.target;
    const typing=target instanceof Element&&(target.matches("input,textarea,select,[contenteditable='true']")||target.closest("[role='dialog']"));
-   if(event.key==="?"&&!typing){event.preventDefault();const help=$("#rr-shortcut-help");if(help)help.hidden=!help.hidden;return}\n   if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="k"){event.preventDefault();openQuickSearch();return}
+   if(event.key==="?"&&!typing){event.preventDefault();const help=$("#rr-shortcut-help");if(help)help.hidden=!help.hidden;return}
+   if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="k"){event.preventDefault();openQuickSearch();return}
    if(!typing&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&event.key==="/"){event.preventDefault();openQuickSearch()}
   });
  }
