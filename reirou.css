@@ -948,3 +948,116 @@ body:not(.revolution-home) .nav-wrap .nav a:hover,
 body:not(.revolution-home) .nav-wrap .nav a[aria-current="page"]{
   color:#fff8ea!important;background:rgba(255,255,255,.055)!important;border-bottom-color:#d7c39a!important;
 }
+
+
+/* === REIRŌ ROMANTIC FINISH / 2026-10-28 ===
+   Light-paper editorial surfaces, antique gold rules and restrained wine accents.
+   This layer intentionally avoids near-black panels on interior pages. */
+:root{
+  --rr-paper:#f7f2e8;
+  --rr-paper-deep:#eee3d0;
+  --rr-gold:#ad8a4c;
+  --rr-gold-soft:#d8c49a;
+  --rr-wine:#762d3a;
+  --rr-ink:#382a2b;
+  --rr-muted:#766b63;
+  --rr-shadow:0 14px 36px rgba(77,45,34,.075);
+}
+html{scroll-behavior:smooth}
+body{color:var(--rr-ink)}
+::selection{background:#ead7b0;color:#4d1c2a}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:2px solid #9b7336;outline-offset:3px
+}
+body:not(.revolution-home) .masthead{
+  background:linear-gradient(135deg,#fbf7ef 0%,#f3e9d7 100%)!important;
+  border-bottom:1px solid #c8aa73!important;
+}
+body:not(.revolution-home) .hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:clamp(230px,27vw,340px);
+  background:
+    radial-gradient(ellipse at 88% 18%,rgba(183,146,84,.13),transparent 36%),
+    linear-gradient(120deg,#fbf7ef 0%,#f2e7d4 72%,#ead9bd 100%)!important;
+  border-top:1px solid rgba(173,138,76,.35)!important;
+  border-bottom:1px solid #b9985b!important;
+}
+body:not(.revolution-home) .hero::before{
+  content:"";position:absolute;z-index:-1;inset:16px;
+  border:1px solid rgba(173,138,76,.45);pointer-events:none;
+}
+body:not(.revolution-home) .hero::after{
+  content:"文";position:absolute;z-index:-1;right:clamp(1.5rem,8vw,8rem);top:50%;
+  transform:translateY(-50%);font-family:var(--rr-serif);
+  font-size:clamp(8rem,19vw,17rem);line-height:1;
+  color:rgba(118,45,58,.055);pointer-events:none;
+}
+body:not(.revolution-home) .hero .hero-inner{position:relative;z-index:1}
+body:not(.revolution-home) .hero .eyebrow{
+  color:#8b6b37;letter-spacing:.2em;font-size:.68rem
+}
+body:not(.revolution-home) .hero h1{
+  color:#6f2637;text-shadow:none;letter-spacing:.12em;
+  text-wrap:balance;
+}
+body:not(.revolution-home) .hero p{
+  color:#655354;max-width:66ch;line-height:2.05
+}
+body:not(.revolution-home) .hero-rule{
+  background:linear-gradient(90deg,#ad8a4c,rgba(173,138,76,.08))!important;
+}
+body:not(.revolution-home) .breadcrumb{
+  background:rgba(255,252,246,.72);border-bottom:1px solid rgba(173,138,76,.28);
+  color:#766b63
+}
+body:not(.revolution-home) main{max-width:1240px}
+body:not(.revolution-home) .section{
+  background:rgba(255,252,246,.76);
+  border:1px solid rgba(173,138,76,.35);
+  box-shadow:0 8px 24px rgba(77,45,34,.035);
+}
+body:not(.revolution-home) .section::before{border-color:rgba(173,138,76,.16)}
+body:not(.revolution-home) .section-heading h2,
+body:not(.revolution-home) .page-title,
+body:not(.revolution-home) main h2{color:#762d3a}
+body:not(.revolution-home) .card{
+  background:linear-gradient(145deg,#fffdf8,#f4ead9);
+  border:1px solid rgba(173,138,76,.4);
+  box-shadow:0 5px 16px rgba(77,45,34,.045);
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+}
+body:not(.revolution-home) .card:hover{
+  transform:translateY(-3px);border-color:#ad8a4c;
+  box-shadow:0 13px 28px rgba(77,45,34,.09)
+}
+body:not(.revolution-home) .card h3{color:#762d3a}
+body:not(.revolution-home) .card a:focus-visible,
+body:not(.revolution-home) .related-links a:focus-visible{outline-offset:4px}
+body:not(.revolution-home) .footer{
+  background:linear-gradient(115deg,#6b2435 0%,#812f43 55%,#5b2030 100%)!important;
+  color:#f8efdf;border-top:3px double #c9aa70!important;
+}
+body:not(.revolution-home) .footer a,
+body:not(.revolution-home) .footer p,
+body:not(.revolution-home) .footer small,
+body:not(.revolution-home) .footer h2,
+body:not(.revolution-home) .footer h3{color:#f8efdf}
+body:not(.revolution-home) .footer a:hover{color:#e8d2a3}
+.rr-toolbar{border-radius:3px;box-shadow:0 10px 28px rgba(77,45,34,.14)}
+.rr-toolbar button{border-radius:2px}
+.rr-clock{border-color:rgba(173,138,76,.55)}
+.rr-toc,.rr-calendar{border-color:rgba(173,138,76,.48);box-shadow:var(--rr-shadow)}
+.rr-gold-rule{background:linear-gradient(90deg,#ad8a4c,rgba(173,138,76,0))}
+@media(hover:none){
+  body:not(.revolution-home) .card:hover{transform:none}
+}
+@media(max-width:760px){
+  body:not(.revolution-home) .hero::before{inset:9px}
+  body:not(.revolution-home) .hero::after{right:1rem;font-size:8rem}
+  body:not(.revolution-home) .hero h1{letter-spacing:.06em}
+  .rr-toolbar{max-width:calc(100vw - 14px);overflow-x:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  body:not(.revolution-home) .card{transition:none}
+}
