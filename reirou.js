@@ -1,7 +1,7 @@
 /* 玲瓏浪漫 UI enhancement layer — progressive enhancement, no content rewriting */
 (()=> {
  "use strict";
- const STORAGE={intro:"bungeicho.rr.intro.seen.v1",bookmarks:"bungeicho.rr.bookmarks.v1",font:"bungeicho.rr.font.v1"};
+ const STORAGE={intro:"bungeicho.rr.intro.seen.v1",bookmarks:"bungeicho.rr.bookmarks.v1",font:"bungeicho.rr.font.v1",reading:"bungeicho.rr.reading.v1"};
  const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
  const safeRead=(key,fallback)=>{try{const v=localStorage.getItem(key);return v===null?fallback:v}catch{return fallback}};
  const safeWrite=(key,value)=>{try{localStorage.setItem(key,value);return true}catch{return false}};
@@ -425,6 +425,68 @@
   const requestUpdate=()=>{if(!scheduled){scheduled=true;window.requestAnimationFrame(update)}};
   window.addEventListener("scroll",requestUpdate,{passive:true});window.addEventListener("resize",requestUpdate,{passive:true});update();
  }
+
+ function injectResumeReader(){
+  if($("#rr-resume-prompt"))return;
+  let saved={};try{saved=JSON.parse(safeRead(STORAGE.reading,"{}"))||{}}catch{saved={}}
+  const key=location.pathname,position=Number(saved[key]);
+  if(position>420&&window.scrollY<280){
+   const prompt=document.createElement("aside");prompt.id="rr-resume-prompt";prompt.className="rr-resume-prompt";
+   prompt.innerHTML='<span class="rr-resume-mark" aria-hidden="true">續</span><span class="rr-resume-copy"><strong>續讀のしるし</strong><small>前回の閲讀位置を保存しています</small></span><button type="button" data-rr-resume>續きから</button><button type="button" data-rr-resume-dismiss aria-label="閉じる">×</button>';
+   document.body.append(prompt);
+   $("[data-rr-resume]",prompt).addEventListener("click",()=>{prompt.remove();window.scrollTo({top:Math.min(position,document.documentElement.scrollHeight-window.innerHeight),behavior:reduced?"auto":"smooth"});notify("前回の閲讀位置へ移動しました")});
+   $("[data-rr-resume-dismiss]",prompt).addEventListener("click",()=>prompt.remove());
+  }
+  let writeTimer=0;
+  window.addEventListener("scroll",()=>{
+   window.clearTimeout(writeTimer);
+   writeTimer=window.setTimeout(()=>{
+    if(window.scrollY<280)return;
+    let map={};try{map=JSON.parse(safeRead(STORAGE.reading,"{}"))||{}}catch{map={}}
+    map[key]=Math.round(window.scrollY);
+    const entries=Object.entries(map).slice(-30);safeWrite(STORAGE.reading,JSON.stringify(Object.fromEntries(entries)));
+   },650);
+  },{passive:true});
+ }
+ function injectCitationHelper(){
+  if($("#rr-citation-popover"))return;
+  const pop=document.createElement("div");pop.id="rr-citation-popover";pop.className="rr-citation-popover";pop.hidden=true;
+  pop.innerHTML='<span class="rr-citation-label">引用・出典</span><button type="button" data-rr-copy-quote>引用文を複寫</button><button type="button" data-rr-copy-citation>出典付きで複寫</button>';
+  document.body.append(pop);
+  let selectedText="";
+  const reposition=()=>{
+   const selection=window.getSelection();
+   if(!selection||selection.isCollapsed){pop.hidden=true;return}
+   const text=selection.toString().replace(/\s+/g," ").trim();
+   if(text.length<8||text.length>5000){pop.hidden=true;return}
+   const node=selection.anchorNode,element=node instanceof Element?node:node&&node.parentElement;
+   if(element&&element.closest("input,textarea,button,nav,footer,[role='dialog'],#rr-toolbar,#rr-citation-popover")){pop.hidden=true;return}
+   const range=selection.getRangeAt(0),rect=range.getBoundingClientRect();
+   if(!rect.width&&!rect.height){pop.hidden=true;return}
+   selectedText=text;pop.hidden=false;
+   const width=Math.min(330,window.innerWidth-20),left=Math.max(10,Math.min(window.innerWidth-width-10,rect.left+rect.width/2-width/2));
+   pop.style.left=left+"px";
+   const top=rect.bottom+10+74<window.innerHeight?rect.bottom+10:Math.max(10,rect.top-64);
+   pop.style.top=top+"px";
+  };
+  document.addEventListener("mouseup",()=>window.setTimeout(reposition,20));
+  document.addEventListener("keyup",event=>{if(event.shiftKey||event.key.startsWith("Arrow"))window.setTimeout(reposition,20)});
+  window.addEventListener("scroll",()=>{if(!pop.hidden)pop.hidden=true},{passive:true});
+  window.addEventListener("resize",()=>{if(!pop.hidden)reposition()});
+  const copy=async(withSource)=>{
+   if(!selectedText)return;
+   const quote="「"+selectedText+"」";
+   const payload=withSource?quote+"\n— "+getTitle()+"\n"+location.href+"\n閲覽日："+new Date().toLocaleDateString("ja-JP"):quote;
+   try{
+    if(navigator.clipboard&&navigator.clipboard.writeText)await navigator.clipboard.writeText(payload);
+    else{const area=document.createElement("textarea");area.value=payload;area.style.position="fixed";area.style.opacity="0";document.body.append(area);area.select();const ok=document.execCommand("copy");area.remove();if(!ok)throw new Error("copy failed")}
+    pop.hidden=true;notify(withSource?"出典付きの引用を複寫しました":"引用文を複寫しました",true);
+   }catch{notify("複寫できませんでした。ブラウザのクリップボード許可をご確認ください")}
+  };
+  $("[data-rr-copy-quote]",pop).addEventListener("click",()=>copy(false));
+  $("[data-rr-copy-citation]",pop).addEventListener("click",()=>copy(true));
+ }
+
  function installQuickShortcuts(){
   document.addEventListener("keydown",event=>{
    const target=event.target;
@@ -442,6 +504,6 @@
  }
  document.addEventListener("DOMContentLoaded",()=>{
   if(reduced)document.documentElement.classList.add("rr-no-motion");
-  injectToolbar();injectClock();injectCalendar();injectReadingProgress();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
+  injectToolbar();injectClock();injectCalendar();injectReadingProgress();injectResumeReader();injectCitationHelper();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
  });
 })();
