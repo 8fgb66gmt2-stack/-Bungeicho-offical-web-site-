@@ -1120,3 +1120,25 @@ body:not(.revolution-home) .footer a:hover{color:#e8d2a3}
  .rr-command-backdrop,.rr-command-panel{animation:none}
  .rr-progress-bar,.rr-top-button,.rr-toolbar{transition:none}
 }
+
+
+.rr-resume-prompt{position:fixed;z-index:82;left:clamp(12px,2vw,28px);bottom:clamp(64px,7vw,82px);display:flex;align-items:center;gap:10px;max-width:calc(100vw - 24px);padding:10px 12px;border:1px solid rgba(170,138,74,.75);background:rgba(255,250,240,.97);box-shadow:var(--rr-shadow);color:#382a2b;backdrop-filter:blur(12px);animation:rr-command-rise .2s ease-out}
+.rr-resume-mark{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;border:1px solid #ad8a4c;color:#762d3a;font:600 17px var(--rr-serif)}
+.rr-resume-copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.rr-resume-copy strong{color:#762d3a;font:600 12px var(--rr-serif)}
+.rr-resume-copy small{color:#827469;font:10px/1.4 var(--rr-serif)}
+.rr-resume-prompt button{border:1px solid #762d3a;background:#762d3a;color:#fff8ec;padding:7px 9px;font:11px var(--rr-serif);cursor:pointer;white-space:nowrap}
+.rr-resume-prompt button[data-rr-resume-dismiss]{padding:3px 6px;border-color:transparent;background:transparent;color:#766b63;font-size:16px}
+.rr-citation-popover{position:fixed;z-index:140;display:flex;align-items:center;gap:5px;max-width:calc(100vw - 20px);padding:6px;border:1px solid rgba(170,138,74,.8);background:rgba(255,250,240,.98);box-shadow:0 7px 30px rgba(43,30,31,.18);backdrop-filter:blur(10px);animation:rr-command-fade .12s ease-out}
+.rr-citation-popover[hidden]{display:none}
+.rr-citation-label{padding:0 5px;color:#9b7b42;font:10px var(--rr-serif);white-space:nowrap}
+.rr-citation-popover button{padding:6px 8px;border:1px solid rgba(118,45,58,.3);background:transparent;color:#762d3a;font:11px var(--rr-serif);white-space:nowrap;cursor:pointer}
+.rr-citation-popover button:hover{background:#762d3a;color:#fff8ec}
+@media(max-width:560px){
+ .rr-resume-prompt{left:8px;bottom:58px;padding:8px;gap:6px}
+ .rr-resume-copy small{max-width:115px}
+ .rr-citation-popover{gap:3px;padding:4px}
+ .rr-citation-label{display:none}
+ .rr-citation-popover button{padding:7px 6px;font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.rr-resume-prompt,.rr-citation-popover{animation:none}}
