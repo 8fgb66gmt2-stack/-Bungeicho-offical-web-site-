@@ -893,3 +893,41 @@ body:not(.revolution-home) .footer h2,body:not(.revolution-home) .footer h3{
   .new-footer *,body:not(.revolution-home) .footer *{color:#222!important}
   .rr-reveal{opacity:1;transform:none}
 }
+
+
+/* Production refinement: accessible, touch-friendly mobile primary navigation */
+.site-nav-toggle{
+  display:none;align-items:center;justify-content:center;gap:.65rem;
+  min-height:42px;padding:.65rem 1rem;border:1px solid var(--rr-gold);
+  background:var(--rr-paper);color:var(--rr-wine);
+  font:600 .76rem/1.2 "Yu Gothic","Noto Sans JP",sans-serif;letter-spacing:.12em;
+  cursor:pointer;
+}
+.site-nav-toggle:hover,.site-nav-toggle:focus-visible{background:var(--rr-wine);color:#fff8ea}
+.site-nav-toggle:focus-visible{outline:3px solid #8b642c;outline-offset:3px}
+@media(max-width:760px){
+  .new-nav{flex-wrap:wrap;align-items:center;padding-block:.55rem!important;gap:.55rem!important}
+  .new-nav .nav-caption{flex:1 1 auto}
+  .new-nav .site-nav-toggle{display:inline-flex;margin-left:auto}
+  .new-nav .nav,.new-nav .nav:not(.is-open){display:none!important}
+  .new-nav .nav.is-open{
+    display:flex!important;flex:1 0 100%;flex-direction:column;align-items:stretch;justify-content:flex-start;
+    width:100%;max-height:min(65vh,520px);overflow-y:auto;overscroll-behavior:contain;
+    border-top:1px solid rgba(185,152,91,.45);padding-top:.4rem;
+  }
+  .new-nav .nav.is-open a{display:flex;justify-content:space-between;min-height:44px;padding:.7rem .85rem;border-bottom:1px solid rgba(185,152,91,.2)}
+  .new-nav .nav-end{display:none}
+  body:not(.revolution-home) .nav-wrap{display:flex;flex-direction:column;align-items:stretch;padding:.45rem .8rem!important}
+  body:not(.revolution-home) .nav-wrap .site-nav-toggle{display:inline-flex;align-self:flex-end;margin:.1rem 0 .35rem}
+  body:not(.revolution-home) .nav-wrap .nav,body:not(.revolution-home) .nav-wrap .nav:not(.is-open){display:none!important}
+  body:not(.revolution-home) .nav-wrap .nav.is-open{
+    display:flex!important;flex-direction:column;align-items:stretch;justify-content:flex-start;
+    width:100%;max-height:min(65vh,520px);overflow-y:auto;overscroll-behavior:contain;
+    border-top:1px solid rgba(185,152,91,.45);padding-top:.35rem;
+  }
+  body:not(.revolution-home) .nav-wrap .nav.is-open a{display:flex;align-items:center;min-height:44px;padding:.65rem .8rem;border-bottom:1px solid rgba(185,152,91,.2)}
+}
+@media(min-width:761px){
+  .site-nav-toggle{display:none!important}
+  .new-nav .nav,.nav-wrap .nav{display:flex!important}
+}
