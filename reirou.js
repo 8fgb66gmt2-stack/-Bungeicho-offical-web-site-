@@ -92,10 +92,11 @@
  function injectToolbar(){
   if($("#rr-toolbar"))return;
   const bar=document.createElement("nav");bar.id="rr-toolbar";bar.className="rr-toolbar";bar.setAttribute("aria-label","閲覧補助");
-  bar.innerHTML='<button type="button" data-rr-command aria-label="文藝廳全文索引を開く" title="全文索引（Ctrl/⌘+K）">⌕ 索引</button><button type="button" data-rr-focus aria-pressed="false" aria-label="閱讀集中モード" title="閱讀集中モード">集中</button><button type="button" data-rr-bookmark aria-label="このページを栞に保存">栞</button><button type="button" data-rr-open-bookmarks aria-label="保存した栞を開く">一覧</button><button type="button" data-rr-font="small" aria-label="本文を小さく" title="文字を小さく">A−</button><button type="button" data-rr-font="normal" aria-label="本文を標準サイズ" title="標準サイズ">A</button><button type="button" data-rr-font="large" aria-label="本文を大きく" title="文字を大きく">A＋</button>';
+  bar.innerHTML='<button type="button" data-rr-command aria-label="文藝廳全文索引を開く" title="全文索引（Ctrl/⌘+K）">⌕ 索引</button><button type="button" data-rr-focus aria-pressed="false" aria-label="閱讀集中モード" title="閱讀集中モード">集中</button><button type="button" data-rr-sheet aria-pressed="false" aria-label="紙面鑑賞モード" title="本文を読みやすい版面に整える">紙面</button><button type="button" data-rr-bookmark aria-label="このページを栞に保存">栞</button><button type="button" data-rr-open-bookmarks aria-label="保存した栞を開く">一覧</button><button type="button" data-rr-font="small" aria-label="本文を小さく" title="文字を小さく">A−</button><button type="button" data-rr-font="normal" aria-label="本文を標準サイズ" title="標準サイズ">A</button><button type="button" data-rr-font="large" aria-label="本文を大きく" title="文字を大きく">A＋</button>';
   document.body.append(bar);
   $("[data-rr-command]",bar).addEventListener("click",openQuickSearch);
   $("[data-rr-focus]",bar).addEventListener("click",toggleFocusMode);
+  $("[data-rr-sheet]",bar).addEventListener("click",toggleReadingSheet);
   $("[data-rr-bookmark]",bar).addEventListener("click",addBookmark);
   $("[data-rr-open-bookmarks]",bar).addEventListener("click",openBookmarks);
   $$("[data-rr-font]",bar).forEach(b=>b.addEventListener("click",()=>setFontSize(b.dataset.rrFont)));
@@ -487,11 +488,51 @@
   $("[data-rr-copy-citation]",pop).addEventListener("click",()=>copy(true));
  }
 
- function installQuickShortcuts(){
+
+ function toggleReadingSheet(){
+  const active=document.body.classList.toggle("rr-reading-sheet");
+  const button=$("[data-rr-sheet]");if(button)button.setAttribute("aria-pressed",String(active));
+  notify(active?"紙面鑑賞モード：版面を整えました":"紙面鑑賞モード：通常表示に戻しました",true);
+ }
+ function injectPageCraft(){
+  if($("#rr-page-craft"))return;
+  const main=$("main")||$("article")||$(".main-content")||document.body;
+  const text=(main.innerText||"").replace(/\\s+/g," ").trim();
+  const minutes=Math.max(1,Math.ceil(text.length/500));
+  const badge=document.createElement("aside");badge.id="rr-page-craft";badge.className="rr-page-craft";
+  badge.innerHTML='<span class="rr-page-craft-seal" aria-hidden="true">文</span><span><strong>本頁ノ讀書目安</strong><small>'+minutes+' 分ほど</small></span>';
+  const anchor=$(".hero")||$("main")||$(".main-content");
+  if(anchor)anchor.insertAdjacentElement("afterbegin",badge);
+  const headings=$("main h2,main h3,article h2,article h3,.main-content h2,.main-content h3");
+  headings.forEach((heading,index)=>{
+   if(!heading.id){const base=(heading.textContent||"section").toLowerCase().normalize("NFKD").replace(/[^a-z0-9ぁ-んァ-ヶ一-龠]+/g,"-").replace(/^-|-$/g,"").slice(0,48)||"section";heading.id=base+"-"+(index+1)}
+   if(heading.querySelector(".rr-heading-link"))return;
+   const link=document.createElement("button");link.type="button";link.className="rr-heading-link";link.textContent="§";link.title="この見出しへのリンクをコピー";link.setAttribute("aria-label","「"+heading.textContent.trim()+"」へのリンクをコピー");
+   link.addEventListener("click",async()=>{
+    const url=location.origin+location.pathname+location.search+"#"+heading.id;
+    try{await navigator.clipboard.writeText(url);notify("見出しへの直リンクを写しました",true)}
+    catch{const field=document.createElement("textarea");field.value=url;field.setAttribute("readonly","");field.style.position="fixed";field.style.opacity="0";document.body.append(field);field.select();const ok=document.execCommand("copy");field.remove();notify(ok?"見出しへの直リンクを写しました":"このURLをコピーしてください： "+url,ok)}
+   });
+   heading.append(link);
+  });
+  if(!$("#rr-top-button")){
+   const top=document.createElement("button");top.id="rr-top-button";top.className="rr-top-button";top.type="button";top.textContent="↑";top.setAttribute("aria-label","ページの先頭へ戻る");top.title="頁首へ戻る";
+   top.addEventListener("click",()=>window.scrollTo({top:0,behavior:reduced?"auto":"smooth"}));document.body.append(top);
+   const sync=()=>top.classList.toggle("is-visible",window.scrollY>500);
+   window.addEventListener("scroll",sync,{passive:true});sync();
+  }
+  if(!$("#rr-shortcut-help")){
+   const help=document.createElement("div");help.id="rr-shortcut-help";help.className="rr-shortcut-help";help.hidden=true;
+   help.innerHTML='<section role="dialog" aria-modal="true" aria-labelledby="rr-shortcut-title"><button type="button" class="rr-shortcut-close" aria-label="閉じる">×</button><p class="rr-shortcut-kicker">BUNGEICHO / READING TOOLS</p><h2 id="rr-shortcut-title">文藝廳閲覽手引</h2><dl><div><dt>Ctrl / ⌘ + K</dt><dd>全文索引を開く</dd></div><div><dt>/</dt><dd>索引を素早く開く</dd></div><div><dt>?</dt><dd>この手引を開く</dd></div><div><dt>Esc</dt><dd>開いている案内を閉じる</dd></div></dl><p>栞・紙面鑑賞・文字サイズ調整は画面下の閲覧補助から。</p></section>';
+   document.body.append(help);
+   help.addEventListener("click",e=>{if(e.target===help||e.target.closest(".rr-shortcut-close"))help.hidden=true});
+  }
+ }
+\n function installQuickShortcuts(){
   document.addEventListener("keydown",event=>{
    const target=event.target;
    const typing=target instanceof Element&&(target.matches("input,textarea,select,[contenteditable='true']")||target.closest("[role='dialog']"));
-   if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="k"){event.preventDefault();openQuickSearch();return}
+   if(event.key==="?"&&!typing){event.preventDefault();const help=$("#rr-shortcut-help");if(help)help.hidden=!help.hidden;return}\n   if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="k"){event.preventDefault();openQuickSearch();return}
    if(!typing&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&event.key==="/"){event.preventDefault();openQuickSearch()}
   });
  }
@@ -504,6 +545,6 @@
  }
  document.addEventListener("DOMContentLoaded",()=>{
   if(reduced)document.documentElement.classList.add("rr-no-motion");
-  injectToolbar();injectClock();injectCalendar();injectReadingProgress();injectResumeReader();injectCitationHelper();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
+  injectToolbar();injectClock();injectCalendar();injectReadingProgress();injectResumeReader();injectCitationHelper();injectPageCraft();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
  });
 })();
