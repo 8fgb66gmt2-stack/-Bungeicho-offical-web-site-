@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+Sitemap: https://8fgb66gmt2-stack.github.io/-Bungeicho-offical-web-site-/sitemap.xml
