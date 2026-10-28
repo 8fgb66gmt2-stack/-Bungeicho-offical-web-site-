@@ -54,7 +54,7 @@
   let back=$("#rr-bookmarks-dialog");
   if(!back){
    back=document.createElement("div");back.id="rr-bookmarks-dialog";back.className="rr-dialog-backdrop";back.hidden=true;
-   back.innerHTML='<section class="rr-dialog" role="dialog" aria-modal="true" aria-labelledby="rr-bookmarks-title" tabindex="-1"><div class="rr-dialog-head"><h2 id="rr-bookmarks-title">文藝廳の栞</h2><button type="button" data-rr-close aria-label="閉じる">閉じる ×</button></div><p class="rr-dialog-intro">このブラウザに保存したページです。端末間の同期は行われません。</p><div data-rr-bookmark-content></div><div class="rr-dialog-actions"><button type="button" data-rr-clear>栞をすべて消去</button></div></section>';
+   back.innerHTML='<section class="rr-dialog" role="dialog" aria-modal="true" aria-labelledby="rr-bookmarks-title" tabindex="-1"><div class="rr-dialog-head"><h2 id="rr-bookmarks-title">文藝廳の栞</h2><button type="button" data-rr-close aria-label="閉じる">閉じる ×</button></div><p class="rr-dialog-intro">このブラウザに保存したページです。端末間の同期は行われません。</p><div data-rr-bookmark-content></div><div class="rr-dialog-actions"><button type="button" data-rr-export>栞を書き出す</button><button type="button" data-rr-import>栞を読み込む</button><button type="button" data-rr-clear>栞をすべて消去</button><input type="file" data-rr-import-file accept="application/json,.json" hidden></div></section>';
    document.body.append(back);
    back.addEventListener("click",event=>{
     if(event.target===back||event.target instanceof Element&&event.target.closest("[data-rr-close]"))closeBookmarks(back);
@@ -69,6 +69,9 @@
     if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
     else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
    });
+   $("[data-rr-export]",back).addEventListener("click",exportBookmarks);
+   $("[data-rr-import]",back).addEventListener("click",()=> $("[data-rr-import-file]",back).click());
+   $("[data-rr-import-file]",back).addEventListener("change",event=>importBookmarks(event.target.files&&event.target.files[0],back,event.target));
    $("[data-rr-clear]",back).addEventListener("click",()=>{
     if(!confirm("保存した栞をすべて消去しますか？"))return;
     if(!writeBookmarks([])){notify("このブラウザでは栞を消去できませんでした");return}
@@ -82,6 +85,43 @@
   document.body.style.overflow="hidden";
   const close=$("[data-rr-close]",back);if(close)close.focus();
  }
+
+ function exportBookmarks(){
+  const payload={format:"bungeicho-bookmarks",version:1,exportedAt:new Date().toISOString(),bookmarks:readBookmarks()};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
+  const url=URL.createObjectURL(blob),link=document.createElement("a");
+  link.href=url;link.download="文藝廳-栞-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.append(link);link.click();link.remove();window.setTimeout(()=>URL.revokeObjectURL(url),1200);
+  notify("栞をJSON形式で書き出しました",true);
+ }
+ function importBookmarks(file,back,input){
+  if(!file)return;
+  if(file.size>1024*1024){notify("ファイルが大きすぎます。1MB以下のJSONをお選びください");input.value="";return}
+  const reader=new FileReader();
+  reader.onload=()=>{
+   try{
+    const parsed=JSON.parse(String(reader.result||""));
+    const incoming=Array.isArray(parsed)?parsed:parsed&&parsed.format==="bungeicho-bookmarks"&&Array.isArray(parsed.bookmarks)?parsed.bookmarks:null;
+    if(!incoming)throw new Error("invalid format");
+    const base=location.pathname.replace(/[^/]*$/,""),clean=[];
+    incoming.slice(0,300).forEach(item=>{
+     if(!item||typeof item.url!=="string"||typeof item.title!=="string")return;
+     try{
+      const url=new URL(item.url,location.href);
+      if(url.origin!==location.origin||!url.pathname.startsWith(base))return;
+      clean.push({url:url.pathname+url.search+url.hash,title:item.title.replace(/\s+/g," ").trim().slice(0,240),addedAt:typeof item.addedAt==="string"?item.addedAt:new Date().toISOString()});
+     }catch{}
+    });
+    const merged=[...clean,...readBookmarks()].filter((item,index,all)=>all.findIndex(other=>other.url===item.url)===index).slice(0,100);
+    if(!writeBookmarks(merged))throw new Error("storage failed");
+    renderBookmarks(back);notify(clean.length+" 件の栞を読み込みました",true);
+   }catch{notify("読み込めませんでした。文藝廳の栞JSONをご確認ください")}
+   input.value="";
+  };
+  reader.onerror=()=>{notify("ファイルを読み取れませんでした");input.value=""};
+  reader.readAsText(file);
+ }
+
  function setFontSize(size,silent=false){
   const allowed=["small","normal","large"].includes(size)?size:"normal";
   document.body.classList.remove("rr-font-small","rr-font-normal","rr-font-large");document.body.classList.add("rr-font-"+allowed);
