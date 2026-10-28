@@ -347,7 +347,7 @@
      const anchor=node.closest("[id]")||node;
      const id=anchor.id||node.id||"";
      const href=path+(id?"#"+encodeURIComponent(id):"");
-     entries.push({title:title.slice(0,115),subtitle:pageTitle+" ／ "+section,href,haystack:normSearch(title+" "+pageTitle+" "+section),type:"content"});
+     entries.push({title:title.slice(0,115),snippet:title.length>115?title.slice(0,230)+"…":"",subtitle:pageTitle+" ／ "+section,href,haystack:normSearch(title+" "+pageTitle+" "+section),type:"content"});
      if(entries.length>=180)break;
     }
     return entries;
@@ -419,7 +419,7 @@
    const kind=document.createElement("span");kind.className="rr-command-result-kind";kind.textContent=({page:"公開頁",heading:"見出し",content:"本文記録",action:"操作"})[item.type]||"記録";
    const title=document.createElement("span");title.className="rr-command-result-title";title.textContent=item.title;
    const subtitle=document.createElement("span");subtitle.className="rr-command-result-subtitle";subtitle.textContent=item.subtitle||"";
-   button.append(kind,title,subtitle);button.addEventListener("mouseenter",()=>{quickSearchCursor=index;syncQuickSearchSelection()});button.addEventListener("click",()=>runQuickSearchItem(item));quickSearchResults.append(button);
+   button.append(kind,title,subtitle);if(item.snippet){const preview=document.createElement("span");preview.className="rr-command-result-snippet";preview.textContent=item.snippet;button.append(preview)}button.addEventListener("mouseenter",()=>{quickSearchCursor=index;syncQuickSearchSelection()});button.addEventListener("click",()=>runQuickSearchItem(item));quickSearchResults.append(button);
   });
   quickSearchStatus.textContent=query.trim()?results.length+" 件を表示":"索引・操作 "+results.length+" 件 ／ 全文検索は語句を入力";
   quickSearchResults.dataset.count=String(results.length);
