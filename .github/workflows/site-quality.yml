@@ -1,0 +1,37 @@
+name: Site quality
+
+on:
+  push:
+    branches:
+      - "文藝廳"
+  pull_request:
+    branches:
+      - "文藝廳"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check site.js
+          node --check aesthetic.js
+          node --check reirou.js
+          node --check jinbutsuroku.js
+
+      - name: Check pages, local links, metadata, CSS and sitemap
+        run: python3 scripts/check_site.py
