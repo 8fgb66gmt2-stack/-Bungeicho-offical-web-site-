@@ -1142,3 +1142,31 @@ body:not(.revolution-home) .footer a:hover{color:#e8d2a3}
  .rr-citation-popover button{padding:7px 6px;font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){.rr-resume-prompt,.rr-citation-popover{animation:none}}
+
+
+/* 玲瓏の閲覽機構 — editorial utilities */
+.rr-toolbar [data-rr-sheet][aria-pressed="true"]{background:#762d3a;color:#fff8ec;border-color:#ad8a4c}
+.rr-page-craft{position:relative;z-index:1;display:inline-flex;align-items:center;gap:9px;margin:0 0 14px;padding:7px 11px;border:1px solid rgba(173,138,76,.45);background:rgba(255,250,240,.82);color:#766b63;font:11px/1.4 var(--rr-serif);box-shadow:0 3px 12px rgba(65,44,32,.05)}
+.rr-page-craft-seal{display:grid;place-items:center;width:28px;height:28px;border:1px solid #ad8a4c;color:#762d3a;font-size:16px}
+.rr-page-craft strong,.rr-page-craft small{display:block}.rr-page-craft strong{color:#762d3a;font-weight:600}.rr-page-craft small{margin-top:2px}
+.rr-heading-link{display:inline-grid;place-items:center;vertical-align:middle;margin-inline-start:7px;width:23px;height:23px;padding:0;border:1px solid rgba(173,138,76,.48);background:rgba(255,250,240,.75);color:#9b7b42;font:12px/1 var(--rr-serif);opacity:.35;cursor:pointer;transition:opacity .18s,background .18s,color .18s}
+h2:hover .rr-heading-link,h3:hover .rr-heading-link,.rr-heading-link:focus-visible{opacity:1}
+.rr-heading-link:hover{background:#762d3a;color:#fff8ec}
+.rr-top-button{position:fixed;right:18px;bottom:88px;z-index:79;display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(173,138,76,.8);background:rgba(255,250,240,.95);color:#762d3a;font:22px/1 var(--rr-serif);box-shadow:0 5px 22px rgba(43,30,31,.13);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .2s,visibility .2s;cursor:pointer}
+.rr-top-button.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
+.rr-shortcut-help{position:fixed;inset:0;z-index:180;display:grid;place-items:center;padding:18px;background:rgba(49,32,31,.48);backdrop-filter:blur(7px)}
+.rr-shortcut-help[hidden]{display:none}
+.rr-shortcut-help section{position:relative;width:min(520px,100%);padding:clamp(24px,5vw,42px);border:1px solid #ad8a4c;background:linear-gradient(145deg,#fffaf0,#f0e5d2);color:#382a2b;box-shadow:0 22px 80px rgba(25,15,15,.24)}
+.rr-shortcut-kicker{margin:0 0 10px;color:#9b7b42;font:10px/1.4 var(--rr-serif);letter-spacing:.18em}
+.rr-shortcut-help h2{margin:0 0 22px;color:#762d3a;font:600 clamp(23px,4vw,32px) var(--rr-serif)}
+.rr-shortcut-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border:1px solid rgba(118,45,58,.3);background:transparent;color:#762d3a;font-size:21px;cursor:pointer}
+.rr-shortcut-help dl{margin:0}.rr-shortcut-help dl div{display:grid;grid-template-columns:minmax(120px,1fr) 1.4fr;gap:12px;padding:12px 0;border-bottom:1px solid rgba(173,138,76,.25)}
+.rr-shortcut-help dt{color:#762d3a;font:600 12px var(--rr-serif)}.rr-shortcut-help dd{margin:0;color:#766b63;font:12px/1.6 var(--rr-serif)}
+.rr-shortcut-help section>p:last-child{margin:20px 0 0;color:#766b63;font:12px/1.8 var(--rr-serif)}
+body.rr-reading-sheet main,body.rr-reading-sheet article,body.rr-reading-sheet .main-content{max-width:790px!important;margin-inline:auto!important}
+body.rr-reading-sheet main p,body.rr-reading-sheet article p,body.rr-reading-sheet .main-content p{font-family:var(--rr-serif);font-size:1.045em;line-height:2.05;letter-spacing:.025em}
+body.rr-reading-sheet main h2,body.rr-reading-sheet article h2,body.rr-reading-sheet .main-content h2{padding-bottom:.45em;border-bottom:1px solid rgba(173,138,76,.38)}
+body.rr-reading-sheet .sidebar,body.rr-reading-sheet aside:not(.rr-page-craft):not(.rr-clock){transition:opacity .2s}
+body.rr-reading-sheet .sidebar{opacity:.72}
+@media(max-width:560px){.rr-page-craft{margin-bottom:10px}.rr-top-button{right:10px;bottom:76px;width:38px;height:38px}.rr-shortcut-help dl div{grid-template-columns:1fr;gap:4px}.rr-heading-link{opacity:.7;width:26px;height:26px}}
+@media(prefers-reduced-motion:reduce){.rr-top-button,.rr-heading-link{transition:none}.rr-top-button{transform:none}}
