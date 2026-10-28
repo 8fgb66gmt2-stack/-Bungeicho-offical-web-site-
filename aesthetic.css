@@ -490,7 +490,6 @@ html.aes-js body.revolution-home .aes-rv{
   transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1),filter 1s;
 }
 html.aes-js body.revolution-home .aes-rv.aes-in{opacity:1;transform:none;filter:none}
-#aes-petals{position:fixed;inset:0;width:100%;height:100%;z-index:40;pointer-events:none;opacity:.48}
 
 /* レスポンシブ */
 @media(max-width:1050px){
@@ -577,16 +576,13 @@ html.aes-js body.revolution-home .aes-rv.aes-in{opacity:1;transform:none;filter:
   body.revolution-home .footer-bottom{flex-direction:column;gap:.3rem}
   body.revolution-home .index-results{grid-template-columns:1fr}
   body.revolution-home .index-panel{padding:1.4rem}
-  #aes-petals{opacity:.25}
 }
 @media(prefers-reduced-motion:reduce){
   body.revolution-home *,body.revolution-home *:before,body.revolution-home *:after{
     scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;
   }
   html.aes-js body.revolution-home .aes-rv{opacity:1;transform:none;filter:none}
-  #aes-petals{display:none}
 }
-
 
 /* ============================================================
    玲瓏浪漫・可読性改修
