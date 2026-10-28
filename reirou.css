@@ -1170,3 +1170,57 @@ body.rr-reading-sheet .sidebar,body.rr-reading-sheet aside:not(.rr-page-craft):n
 body.rr-reading-sheet .sidebar{opacity:.72}
 @media(max-width:560px){.rr-page-craft{margin-bottom:10px}.rr-top-button{right:10px;bottom:76px;width:38px;height:38px}.rr-shortcut-help dl div{grid-template-columns:1fr;gap:4px}.rr-heading-link{opacity:.7;width:26px;height:26px}}
 @media(prefers-reduced-motion:reduce){.rr-top-button,.rr-heading-link{transition:none}.rr-top-button{transform:none}}
+
+
+/* 文藝廳回遊案内・検索索引・頁繰り演出 */
+.rr-command-result-kind{display:inline-flex;align-items:center;margin-bottom:2px;padding:2px 6px;border:1px solid rgba(173,138,76,.35);color:#92733f;background:rgba(173,138,76,.07);font:9px/1.4 var(--rr-serif);letter-spacing:.07em}
+.rr-command-result.is-selected .rr-command-result-kind{border-color:rgba(118,45,58,.25);color:#762d3a;background:rgba(118,45,58,.06)}
+.rr-page-journey{position:relative;isolation:isolate;overflow:hidden;width:min(100% - 24px,980px);margin:clamp(30px,5vw,58px) auto 24px;padding:clamp(18px,3.5vw,30px);border:1px solid rgba(173,138,76,.72);outline:1px solid rgba(173,138,76,.18);outline-offset:4px;background:linear-gradient(135deg,rgba(255,251,242,.98),rgba(240,229,208,.96));color:#382a2b;box-shadow:0 15px 40px rgba(55,35,30,.07)}
+.rr-page-journey::before{position:absolute;z-index:-1;right:-38px;top:-72px;content:"文";font:clamp(120px,20vw,220px)/1 var(--rr-serif);color:rgba(173,138,76,.065);pointer-events:none}
+.rr-journey-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+.rr-journey-kicker{color:#9b7b42;font:600 9px/1.5 var(--rr-serif);letter-spacing:.18em}
+.rr-journey-count{color:#766b63;font:11px/1.5 var(--rr-serif);white-space:nowrap}
+.rr-journey-progress{height:2px;overflow:hidden;background:rgba(173,138,76,.22)}
+.rr-journey-progress span{display:block;height:100%;background:linear-gradient(90deg,#ad8a4c,#762d3a);transition:width .35s ease}
+.rr-journey-links{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;gap:12px;margin-top:19px}
+.rr-journey-side{min-width:0;display:flex}
+.rr-journey-next{justify-content:flex-end;text-align:right}
+.rr-journey-link{display:flex;flex-direction:column;justify-content:center;gap:5px;min-width:0;max-width:100%;padding:10px 12px;border:1px solid rgba(173,138,76,.34);background:rgba(255,255,255,.36);color:#762d3a;text-decoration:none;transition:background .18s,border-color .18s,transform .18s}
+.rr-journey-link:hover{transform:translateY(-2px);border-color:#ad8a4c;background:#fffaf0}
+.rr-journey-link small{color:#967c55;font:10px/1.4 var(--rr-serif)}
+.rr-journey-link strong{overflow-wrap:anywhere;font:600 12px/1.55 var(--rr-serif)}
+.rr-journey-unavailable{align-self:center;padding:10px 12px;color:#aa9b85;font:11px/1.5 var(--rr-serif)}
+.rr-journey-search{display:flex;align-self:center;align-items:center;gap:7px;padding:10px 12px;border:1px solid #762d3a;background:#762d3a;color:#fff8ec;font:12px var(--rr-serif);white-space:nowrap;cursor:pointer;box-shadow:0 4px 12px rgba(118,45,58,.12);transition:transform .18s,background .18s}
+.rr-journey-search:hover{transform:translateY(-2px);background:#5d202b}
+.rr-journey-search>span:first-child{font-size:20px;line-height:1}
+.rr-journey-search kbd{padding:2px 4px;border:1px solid rgba(255,248,236,.35);font:9px ui-monospace,monospace;opacity:.8}
+.rr-journey-recent{margin-top:17px;border-top:1px solid rgba(173,138,76,.27);padding-top:11px}
+.rr-journey-recent summary{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#762d3a;font:600 11px/1.6 var(--rr-serif);cursor:pointer;list-style:none}
+.rr-journey-recent summary::-webkit-details-marker{display:none}
+.rr-journey-recent summary::after{content:"＋";margin-left:auto;color:#9b7b42;font-size:15px}
+.rr-journey-recent[open] summary::after{content:"－"}
+.rr-journey-recent summary span{color:#9a8b78;font:10px/1.5 var(--rr-serif);font-weight:400}
+.rr-journey-recent ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 16px;margin:12px 0 0;padding:0 0 0 21px;color:#ad8a4c;font:11px/1.7 var(--rr-serif)}
+.rr-journey-recent li{padding:2px 0}
+.rr-journey-recent a{color:#6f3a40;text-decoration-thickness:1px;text-underline-offset:3px}
+.rr-journey-recent a[aria-current="page"]{font-weight:700;text-decoration:none}
+.rr-transition{transform:perspective(1400px) rotateY(-92deg);transform-origin:left center;transform-style:preserve-3d;backface-visibility:hidden;box-shadow:20px 0 34px rgba(65,43,35,.13);border-inline:0;transition:transform .42s cubic-bezier(.72,0,.22,1),opacity .12s ease-out}
+.rr-transition::before{position:absolute;top:0;bottom:0;left:0;width:min(5vw,48px);content:"";border-right:1px solid rgba(173,138,76,.55);background:linear-gradient(90deg,rgba(173,138,76,.22),rgba(255,250,240,0));pointer-events:none}
+.rr-transition::after{position:absolute;inset:0;content:"文藝廳";display:grid;place-items:center;color:rgba(118,45,58,.15);font:clamp(30px,8vw,90px) var(--rr-serif);letter-spacing:.2em;pointer-events:none}
+.rr-transition.is-active{opacity:1;transform:perspective(1400px) rotateY(0deg)}
+@media(max-width:620px){
+ .rr-page-journey{width:calc(100% - 20px);padding:16px;margin-top:32px}
+ .rr-journey-heading{align-items:flex-start;flex-direction:column;gap:3px}
+ .rr-journey-links{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+ .rr-journey-prev{grid-column:1;grid-row:1}
+ .rr-journey-next{grid-column:2;grid-row:1}
+ .rr-journey-search{grid-column:1 / -1;grid-row:2;justify-content:center}
+ .rr-journey-link{padding:9px 8px}
+ .rr-journey-link strong{font-size:11px}
+ .rr-journey-search kbd{display:none}
+ .rr-journey-recent ol{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+ .rr-journey-progress span,.rr-journey-link,.rr-journey-search{transition:none}
+ .rr-transition{transform:none;transition:opacity .01ms}
+}
