@@ -74,6 +74,7 @@ body::before{
 .rr-dialog-backdrop[hidden]{display:none}
 .rr-dialog{width:min(640px,100%);max-height:min(78vh,760px);overflow:auto;background:var(--rr-paper);color:var(--rr-ink);border:1px solid var(--rr-gold);box-shadow:0 20px 80px #21140f40;padding:clamp(1rem,4vw,2rem)}
 .rr-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--rr-gold);padding-bottom:.7rem;margin-bottom:1rem}
+.rr-dialog-actions{display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap;margin-top:1rem}
 .rr-dialog-head h2{margin:0;color:var(--rr-wine);font-size:1.3rem}
 .rr-dialog button{background:transparent;border:1px solid var(--rr-gold);padding:.4rem .7rem;color:inherit;cursor:pointer}
 .rr-bookmark-list{display:grid;gap:.6rem;padding:0;list-style:none}
@@ -736,7 +737,9 @@ body:not(.revolution-home) .lr-list li::marker{color:var(--rr-gold)}
   color:#fff6e6;cursor:pointer;
 }
 #rr-archive-search .rr-archive-controls button:hover{background:#842b40}
+#rr-archive-search .rr-archive-label{display:block;font-weight:600;margin-bottom:.5rem}
 #rr-archive-count{margin:.7rem 0 0;color:var(--rr-muted);font-size:.78rem;letter-spacing:.04em}
+.rr-toc-subitem{margin-left:1rem}
 .rr-index button[disabled]{opacity:.4;cursor:not-allowed}
 
 /* Shared footer — rich wine paper with one thin gold colophon line */
