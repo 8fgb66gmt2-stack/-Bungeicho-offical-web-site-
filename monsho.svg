@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">文藝廳紋章</title>
+  <rect width="128" height="128" rx="4" fill="#6d182b"/>
+  <rect x="8" y="8" width="112" height="112" rx="2" fill="none" stroke="#d8bf8a" stroke-width="1.2"/>
+  <circle cx="64" cy="64" r="46" fill="none" stroke="#d8bf8a" stroke-width="2"/>
+  <circle cx="64" cy="64" r="39" fill="none" stroke="#d8bf8a" stroke-opacity=".55"/>
+  <path d="M64 13v12M64 103v12M13 64h12M103 64h12" stroke="#d8bf8a" stroke-width="1.5"/>
+  <text x="64" y="82" text-anchor="middle" font-family="serif" font-size="58" fill="#fff7e8">文</text>
+</svg>
