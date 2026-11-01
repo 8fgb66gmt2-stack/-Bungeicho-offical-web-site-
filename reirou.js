@@ -640,54 +640,6 @@
   });
  }
 
-
- function injectSectionNavigator(){
-  if($("#rr-section-navigator"))return;
-  const main=$("#main")||$("main")||$("article");if(!main)return;
-  const headings=$("h2",main).filter(h=>h.textContent.trim()&&!h.closest("nav,[aria-hidden='true']"));
-  if(headings.length<3)return;
-  const slug=text=>(text||"section").toLowerCase().normalize("NFKC").replace(/[^a-z0-9ぁ-んァ-ヶ一-龠]+/g,"-").replace(/^-|-$/g,"").slice(0,48)||"section";
-  const used=new Set();
-  headings.forEach((h,i)=>{if(!h.id){let id=slug(h.textContent),base=id,n=2;while(document.getElementById(id)||used.has(id))id=base+"-"+n++;h.id=id}used.add(h.id);});
-  const nav=document.createElement("nav");nav.id="rr-section-navigator";nav.className="rr-section-navigator";nav.setAttribute("aria-label","本頁の章間移動");
-  const label=document.createElement("div");label.className="rr-section-nav-label";label.innerHTML='<span>CONTENTS</span><strong>本頁の章</strong>';
-  const track=document.createElement("div");track.className="rr-section-nav-track";track.setAttribute("aria-hidden","true");
-  const list=document.createElement("ol");list.className="rr-section-nav-list";
-  const links=[];
-  headings.forEach((heading,index)=>{
-   const li=document.createElement("li"),a=document.createElement("a");
-   a.href="#"+encodeURIComponent(heading.id);a.dataset.sectionIndex=String(index);
-   a.setAttribute("aria-label","第"+(index+1)+"章："+heading.textContent.trim());
-   const dot=document.createElement("span");dot.className="rr-section-nav-dot";dot.setAttribute("aria-hidden","true");
-   const name=document.createElement("span");name.className="rr-section-nav-name";name.textContent=heading.textContent.trim();
-   a.append(dot,name);li.append(a);list.append(li);links.push(a);
-  });
-  nav.append(label,track,list);document.body.append(nav);
-  let active=-1;
-  const setActive=index=>{
-   if(index<0||index>=links.length||index===active)return;active=index;
-   links.forEach((link,i)=>{if(i===index){link.classList.add("is-active");link.setAttribute("aria-current","location")}else{link.classList.remove("is-active");link.removeAttribute("aria-current")}});
-   nav.style.setProperty("--rr-section-progress",((index+1)/links.length*100)+"%");
-   nav.dataset.active=String(index+1);
-   label.querySelector("strong").textContent=headings[index].textContent.trim();
-  };
-  const observers=[];
-  if("IntersectionObserver"in window){
-   const io=new IntersectionObserver(entries=>{
-    const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
-    if(visible.length)setActive(headings.indexOf(visible[0].target));
-   },{rootMargin:"-16% 0px -70% 0px",threshold:0});
-   headings.forEach(h=>io.observe(h));observers.push(io);
-  }else{
-   const update=()=>{let index=0;headings.forEach((h,i)=>{if(h.getBoundingClientRect().top<innerHeight*.38)index=i});setActive(index)};
-   window.addEventListener("scroll",update,{passive:true});update();
-  }
-  links.forEach((link,index)=>link.addEventListener("click",()=>setActive(index)));
-  setActive(0);
-  const syncVisibility=()=>nav.classList.toggle("is-visible",window.scrollY>Math.max(220,main.offsetTop-160));
-  window.addEventListener("scroll",syncVisibility,{passive:true});syncVisibility();
- }
-
  function setupSealActions(){
   document.addEventListener("click",e=>{
    const button=e.target.closest("button");if(!button||button.closest("#rr-toolbar")||button.closest("#rr-bookmarks-dialog"))return;
@@ -696,6 +648,6 @@
  }
  document.addEventListener("DOMContentLoaded",()=>{
   if(reduced)document.documentElement.classList.add("rr-no-motion");
-  injectToolbar();injectClock();injectCalendar();injectReadingProgress();injectResumeReader();injectCitationHelper();injectPageCraft();injectPageJourney();injectSectionNavigator();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
+  injectToolbar();injectClock();injectCalendar();injectReadingProgress();injectResumeReader();injectCitationHelper();injectPageCraft();injectPageJourney();installQuickShortcuts();injectIntro();setupTransitions();setupReveal();setupToc();setupPersonIndex();setupArchiveSearch();setupSealActions();
  });
 })();
